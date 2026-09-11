@@ -1,0 +1,91 @@
+/* Folha OPCIONAL das aulas.
+ *
+ *     <link rel="stylesheet" href="../../assets/css/aula.css">
+ *
+ * Serve para uma aula que chega sem estilo proprio sair parecida com as outras.
+ * Se o seu HTML ja vem estilizado, ignore este arquivo: os botoes de pronuncia
+ * trazem o CSS deles injetado por pronuncia.js e nao dependem daqui. */
+
+:root{
+  --paper:#FAF7F0; --ink:#26241F; --soft:#6B6557; --indigo:#2E4272;
+  --hira:#2F7D5B; --hira-bg:#E4F2EA; --hanko:#C63D2F; --line:#E4DED2;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;
+  line-height:1.7; font-size:16px;
+}
+
+.aula{ max-width:760px; margin:0 auto; padding:32px 16px 80px; }
+
+.voltar{
+  display:inline-block; color:var(--soft); text-decoration:none;
+  font-size:13.5px; margin-bottom:18px;
+}
+.voltar:hover{ color:var(--indigo); }
+
+h1{ font-family:Iowan Old Style,Georgia,serif; font-size:clamp(23px,5vw,30px);
+    margin-bottom:6px; }
+h2{ font-size:19px; color:var(--indigo); margin:34px 0 12px;
+    border-bottom:1px solid var(--line); padding-bottom:6px; }
+h3{ font-size:16px; color:var(--hira); margin:22px 0 8px; }
+p{ margin-bottom:12px; max-width:64ch; }
+.subtitulo{ color:var(--soft); font-size:14px; margin-bottom:22px; }
+
+.stamp{
+  display:inline-block; border:2px solid var(--hanko); color:var(--hanko);
+  border-radius:8px; padding:2px 10px; font-size:13px; font-weight:600;
+  margin-bottom:12px;
+}
+
+/* A pilha de fontes usa o que o sistema ja tem. Nenhuma fonte vem de CDN: a
+ * pagina precisa abrir offline e nao depender de terceiro estar no ar. */
+.jp{
+  font-family:"Hiragino Sans","Yu Gothic","Noto Sans JP","Meiryo",sans-serif;
+  font-size:1.25em; line-height:2;
+}
+.romaji{ color:var(--soft); font-style:italic; font-size:.92em; }
+
+ruby{ ruby-position:over; }
+rt{ font-size:.5em; color:var(--soft); font-weight:400; }
+
+/* Vocabulario */
+.vocab{ width:100%; border-collapse:collapse; margin:14px 0; font-size:15px; }
+.vocab th, .vocab td{
+  border-bottom:1px solid var(--line); padding:9px 10px; text-align:left;
+  vertical-align:middle;
+}
+.vocab th{ color:var(--indigo); font-size:13px; text-transform:uppercase;
+           letter-spacing:.04em; }
+.vocab tr:hover td{ background:#fff; }
+
+/* Cartoes de kanji */
+.kanji-grade{ display:grid; gap:12px; margin:16px 0;
+  grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); }
+.kanji{ background:#fff; border:1px solid var(--line); border-radius:14px;
+  padding:14px; text-align:center; }
+.kanji .glifo{ font-family:"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;
+  font-size:46px; color:var(--indigo); line-height:1.2; }
+.kanji .leitura{ font-size:13px; color:var(--soft); margin-top:6px; }
+
+/* Frase de exemplo */
+.exemplo{ background:#fff; border-left:5px solid var(--hira);
+  border-radius:0 12px 12px 0; padding:12px 16px; margin:14px 0; }
+.exemplo .traducao{ color:var(--soft); font-size:14px; margin:6px 0 0; }
+
+/* Callouts */
+.nota{ background:var(--hira-bg); border-left:5px solid var(--hira);
+  border-radius:0 12px 12px 0; padding:12px 16px; margin:18px 0; font-size:14.5px; }
+.atencao{ background:#FFF4E5; border-left:5px solid #E0A030;
+  border-radius:0 12px 12px 0; padding:12px 16px; margin:18px 0; font-size:14.5px; }
+
+/* Etiquetas */
+.tags{ display:flex; gap:6px; flex-wrap:wrap; margin:16px 0; }
+.tag{ background:var(--hira-bg); color:var(--hira); border-radius:999px;
+  padding:2px 10px; font-size:12px; font-weight:700; }
+
+footer{ margin-top:48px; border-top:1px solid var(--line); padding-top:14px;
+  font-size:12.5px; color:var(--soft); }

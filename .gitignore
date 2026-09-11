@@ -1,0 +1,25 @@
+# Material bruto da aula (audio do professor, foto do caderno, PDF, slide).
+# Serve de insumo para voce gerar o HTML, nao entra no repositorio: pesa e pode
+# ter voz e nome de outras pessoas.
+ingest/
+
+# Rascunho local
+scratch/
+
+# Sistema e editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node, caso algum dia entre ferramenta
+node_modules/
+*.log

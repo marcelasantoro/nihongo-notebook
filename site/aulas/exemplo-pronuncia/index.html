@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Como funciona o botão de pronúncia</title>
+<link rel="icon" href="../../assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/css/aula.css">
+</head>
+<body>
+<main class="aula">
+
+  <a class="voltar" href="../../">&larr; todas as aulas</a>
+
+  <span class="stamp">exemplo</span>
+  <h1>Como funciona o botão de pronúncia</h1>
+  <p class="subtitulo">
+    Esta página não é aula de japonês: é a demonstração do contrato.
+    Veja o código-fonte dela junto com <code>docs/CONTRATO-AULA.md</code>.
+  </p>
+
+  <h2>O básico</h2>
+  <p>
+    Qualquer elemento com <code>data-ouvir</code> ganha um botão logo depois.
+    Com valor, ele lê o valor; sem valor, lê o próprio texto.
+  </p>
+
+  <p class="jp"><span data-ouvir="あ">あ</span></p>
+  <p class="jp"><span data-ouvir>こんにちは</span></p>
+
+  <h2>Numa tabela de vocabulário</h2>
+  <p>Marque o <code>&lt;span&gt;</code> de dentro, não a linha inteira — senão o botão cai no fim.</p>
+
+  <table class="vocab">
+    <thead>
+      <tr><th>Japonês</th><th>Rōmaji</th><th>Português</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="jp"><span data-ouvir="ねこ">ねこ</span></td>
+        <td class="romaji">neko</td><td>gato</td>
+      </tr>
+      <tr>
+        <td class="jp"><span data-ouvir="がっこう">がっこう</span></td>
+        <td class="romaji">gakkō</td><td>escola</td>
+      </tr>
+      <tr>
+        <td class="jp"><span data-ouvir="ラーメン">ラーメン</span></td>
+        <td class="romaji">rāmen</td><td>lámen</td>
+      </tr>
+      <tr>
+        <td class="jp"><span data-ouvir="しゃしん">しゃしん</span></td>
+        <td class="romaji">shashin</td><td>fotografia</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Kanji com leitura em kana</h2>
+  <p>
+    O botão não adivinha a leitura de um kanji. Passe a leitura em kana no atributo
+    e deixe o kanji no texto:
+  </p>
+
+  <div class="kanji-grade">
+    <div class="kanji">
+      <div class="glifo jp"><span data-ouvir="やま">山</span></div>
+      <div class="leitura">yama · montanha</div>
+    </div>
+    <div class="kanji">
+      <div class="glifo jp"><span data-ouvir="かわ">川</span></div>
+      <div class="leitura">kawa · rio</div>
+    </div>
+    <div class="kanji">
+      <div class="glifo jp"><span data-ouvir="ひと">人</span></div>
+      <div class="leitura">hito · pessoa</div>
+    </div>
+  </div>
+
+  <div class="nota">
+    <b>Se o botão estiver laranja, escrito <code>≈ aproximação</code>:</b>
+    este computador não tem voz japonesa instalada e o som é uma leitura em
+    grafia portuguesa — serve de muleta, não de modelo. Para o japonês de verdade,
+    instale a voz (Configurações › Hora e idioma › Idioma e região › Adicionar
+    idioma › 日本語, marcando <i>Fala</i>) ou coloque um MP3 em
+    <code>site/assets/audio/</code>.
+  </div>
+
+  <h2>Uma frase inteira</h2>
+  <div class="exemplo">
+    <p class="jp"><span data-ouvir="ねこがすきです">ねこがすきです</span></p>
+    <p class="traducao">Eu gosto de gatos.</p>
+  </div>
+
+  <div class="tags">
+    <span class="tag">exemplo</span>
+    <span class="tag">contrato</span>
+  </div>
+
+  <footer>
+    O que faz os botões aparecerem é uma linha só, ali embaixo no fim do arquivo.
+  </footer>
+
+</main>
+<script type="module" src="../../assets/js/pronuncia.js"></script>
+</body>
+</html>

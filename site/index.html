@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>にほんごノート · caderno de japonês</title>
+<link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
+<style>
+  /* Mesma paleta das aulas: papel washi, tinta, indigo e vermelho de carimbo. */
+  :root{
+    --paper:#FAF7F0; --ink:#26241F; --soft:#6B6557; --indigo:#2E4272;
+    --hira:#2F7D5B; --hira-bg:#E4F2EA; --hanko:#C63D2F; --line:#E4DED2;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--paper); color:var(--ink);
+    font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;
+    line-height:1.6; font-size:16px;}
+  .jp{font-family:"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;}
+  .wrap{max-width:760px; margin:0 auto; padding:40px 16px 80px;}
+
+  header{border-bottom:1px solid var(--line); padding-bottom:20px; margin-bottom:8px;}
+  .stamp{display:inline-block; border:2px solid var(--hanko); color:var(--hanko);
+    border-radius:8px; padding:2px 10px; font-size:13px; font-weight:600; margin-bottom:12px;}
+  h1{font-family:Iowan Old Style,Georgia,serif; font-size:clamp(24px,5vw,32px); margin-bottom:6px;}
+  h1 .kana{color:var(--indigo);}
+  .subtitulo{color:var(--soft); font-size:14px;}
+
+  .barra{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:22px 0 6px;}
+  #busca{flex:1; min-width:180px; border:1.5px solid var(--line); border-radius:10px;
+    padding:9px 13px; font:inherit; font-size:14.5px; background:#fff; color:var(--ink);}
+  #busca:focus{outline:none; border-color:var(--indigo);}
+  .tags-filtro{display:flex; gap:6px; flex-wrap:wrap;}
+  .filtro{border:1.5px solid var(--line); background:#fff; color:var(--soft);
+    border-radius:999px; padding:4px 12px; font:inherit; font-size:12.5px; font-weight:600;
+    cursor:pointer; transition:all .12s;}
+  .filtro:hover{border-color:var(--indigo); color:var(--indigo);}
+  .filtro[aria-pressed="true"]{background:var(--indigo); border-color:var(--indigo); color:#fff;}
+
+  .contagem{font-size:12.5px; color:var(--soft); margin:14px 0 10px;}
+
+  ul{list-style:none; display:flex; flex-direction:column; gap:12px;}
+  li a{display:block; background:#fff; border:1px solid var(--line);
+    border-left:5px solid var(--hira); border-radius:0 14px 14px 0;
+    padding:15px 18px; text-decoration:none; color:inherit; transition:all .12s;}
+  li a:hover{border-left-color:var(--hanko); transform:translateX(2px);
+    box-shadow:0 2px 12px rgba(38,36,31,.07);}
+  .titulo{font-weight:700; font-size:16.5px; color:var(--indigo); margin-bottom:3px;}
+  .resumo{font-size:14px; color:var(--soft);}
+  .rodape-card{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:9px;}
+  .data{font-size:12px; color:var(--soft); font-variant-numeric:tabular-nums;}
+  .tag{background:var(--hira-bg); color:var(--hira); border-radius:999px;
+    padding:1px 9px; font-size:11.5px; font-weight:700;}
+
+  .vazio{background:#fff; border:1px dashed var(--line); border-radius:14px;
+    padding:22px 20px; color:var(--soft); font-size:14.5px;}
+  .vazio b{color:var(--ink);}
+  .vazio code{background:var(--hira-bg); color:var(--hira); border-radius:5px;
+    padding:1px 6px; font-size:13px;}
+  .vazio p + p{margin-top:10px;}
+
+  footer{margin-top:52px; border-top:1px solid var(--line); padding-top:14px;
+    font-size:12.5px; color:var(--soft);}
+  footer a{color:var(--indigo);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="stamp">日本語ノート</span>
+    <h1>Caderno de <span class="kana jp">にほんご</span></h1>
+    <div class="subtitulo">Minhas aulas de japonês, uma página por aula.</div>
+  </header>
+
+  <div class="barra" id="barra" hidden>
+    <input id="busca" type="search" placeholder="buscar por título, resumo ou tag…"
+           autocomplete="off" aria-label="Buscar aula">
+    <div class="tags-filtro" id="tags"></div>
+  </div>
+
+  <div class="contagem" id="contagem" hidden></div>
+  <ul id="lista"></ul>
+
+  <footer>
+    Site estático, sem build. Cada aula é um HTML solto em <code>site/aulas/</code>,
+    publicado por <code>git push</code>. Veja o
+    <a href="https://github.com/marcelasantoro/nihongo-notebook">repositório</a>.
+  </footer>
+
+</div>
+
+<script>
+/* O hub só lê. Quem escreve em data/aulas.json é scripts/nova_aula.py, para a
+ * listagem ficar versionada no git em vez de viver no navegador de um aparelho
+ * só. Um site estático não consegue listar uma pasta: o Pages não serve índice
+ * de diretório, então o JSON é o que existe de índice. */
+const lista = document.getElementById('lista');
+const barra = document.getElementById('barra');
+const contagem = document.getElementById('contagem');
+const busca = document.getElementById('busca');
+const caixaTags = document.getElementById('tags');
+
+let aulas = [];
+let tagAtiva = null;
+
+function vazio(html) {
+  lista.innerHTML = '<li class="vazio">' + html + '</li>';
+}
+
+function cartao(a) {
+  const li = document.createElement('li');
+  const link = document.createElement('a');
+  link.href = 'aulas/' + a.slug + '/';
+
+  const t = document.createElement('div');
+  t.className = 'titulo';
+  t.textContent = a.titulo || a.slug;
+  link.appendChild(t);
+
+  if (a.resumo) {
+    const r = document.createElement('div');
+    r.className = 'resumo';
+    r.textContent = a.resumo;
+    link.appendChild(r);
+  }
+
+  const pe = document.createElement('div');
+  pe.className = 'rodape-card';
+  if (a.data) {
+    const d = document.createElement('span');
+    d.className = 'data';
+    d.textContent = a.data;
+    pe.appendChild(d);
+  }
+  (a.tags || []).forEach(function (tag) {
+    const s = document.createElement('span');
+    s.className = 'tag';
+    s.textContent = tag;
+    pe.appendChild(s);
+  });
+  if (pe.children.length) link.appendChild(pe);
+
+  li.appendChild(link);
+  return li;
+}
+
+function desenhar() {
+  const termo = busca.value.trim().toLowerCase();
+  const visiveis = aulas.filter(function (a) {
+    if (tagAtiva && (a.tags || []).indexOf(tagAtiva) === -1) return false;
+    if (!termo) return true;
+    const alvo = [a.titulo, a.resumo, a.slug].concat(a.tags || []).join(' ').toLowerCase();
+    return alvo.indexOf(termo) !== -1;
+  });
+
+  lista.innerHTML = '';
+  if (!visiveis.length) {
+    vazio('Nenhuma aula com esse filtro.');
+    contagem.hidden = true;
+    return;
+  }
+  visiveis.forEach(function (a) { lista.appendChild(cartao(a)); });
+  contagem.hidden = false;
+  contagem.textContent = visiveis.length === aulas.length
+    ? aulas.length + (aulas.length === 1 ? ' aula' : ' aulas')
+    : visiveis.length + ' de ' + aulas.length + ' aulas';
+}
+
+function montarTags() {
+  const todas = [];
+  aulas.forEach(function (a) {
+    (a.tags || []).forEach(function (t) { if (todas.indexOf(t) === -1) todas.push(t); });
+  });
+  todas.sort();
+  todas.forEach(function (t) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'filtro';
+    b.textContent = t;
+    b.setAttribute('aria-pressed', 'false');
+    b.onclick = function () {
+      tagAtiva = (tagAtiva === t) ? null : t;
+      caixaTags.querySelectorAll('.filtro').forEach(function (o) {
+        o.setAttribute('aria-pressed', String(o.textContent === tagAtiva));
+      });
+      desenhar();
+    };
+    caixaTags.appendChild(b);
+  });
+}
+
+fetch('data/aulas.json')
+  .then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  })
+  .then(function (dados) {
+    aulas = (dados.aulas || []).slice().sort(function (a, b) {
+      return String(b.data || '').localeCompare(String(a.data || ''));
+    });
+    if (!aulas.length) {
+      vazio('<p><b>Nenhuma aula ainda.</b></p>' +
+            '<p>Gere o HTML da aula do jeito que preferir e traga ele para cá:</p>' +
+            '<p><code>python scripts/nova_aula.py --de caminho/da/aula.html</code></p>');
+      return;
+    }
+    barra.hidden = false;
+    montarTags();
+    desenhar();
+    busca.addEventListener('input', desenhar);
+  })
+  .catch(function (e) {
+    // Por file:// o fetch é bloqueado e o erro não se explica sozinho.
+    const local = location.protocol === 'file:';
+    vazio(local
+      ? '<p><b>Abra o caderno por HTTP, não pelo disco.</b></p>' +
+        '<p>Por <code>file://</code> o navegador bloqueia a leitura do índice. Rode:</p>' +
+        '<p><code>python -m http.server --directory site 8080</code></p>'
+      : '<p><b>Não consegui ler o índice das aulas.</b></p><p>' + e.message + '</p>');
+  });
+</script>
+</body>
+</html>

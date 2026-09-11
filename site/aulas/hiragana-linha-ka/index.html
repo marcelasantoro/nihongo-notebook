@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloco 2 · A linha か — ka ki ku ke ko</title>
+<style>
+  :root{
+    --paper:#FAF7F0; --ink:#26241F; --soft:#6B6557; --indigo:#2E4272;
+    --hira:#2F7D5B; --hira-bg:#E4F2EA; --hanko:#C63D2F; --line:#E4DED2;
+    --amber:#A8690F; --amber-bg:#F6EBD7;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--paper); color:var(--ink);
+    font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;
+    line-height:1.6; font-size:16px;}
+  .wrap{max-width:760px; margin:0 auto; padding:32px 16px 80px;}
+  h1{font-family:Iowan Old Style,Georgia,serif; font-size:clamp(23px,5vw,30px); margin-bottom:8px;}
+  h2{font-family:Iowan Old Style,Georgia,serif; font-size:clamp(19px,4vw,23px); margin:46px 0 12px; padding-top:18px; border-top:1px solid var(--line);}
+  p{margin-bottom:12px; max-width:64ch;}
+  .stamp{display:inline-block; border:2px solid var(--hanko); color:var(--hanko);
+    border-radius:8px; padding:2px 10px; font-size:13px; font-weight:600; margin-bottom:12px;}
+  .jp{font-family:"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;}
+
+  /* mágica k+vogal */
+  .eq{display:flex; align-items:center; justify-content:center; gap:8px; background:#fff;
+    border:1px solid var(--line); border-radius:14px; padding:10px; margin:8px 0;}
+  .eq .k{background:#E7ECF6; color:var(--indigo); font-weight:800; border-radius:10px; padding:8px 14px; font-size:22px;}
+  .eq .v{background:var(--hira-bg); border-radius:10px; padding:6px 12px; text-align:center;}
+  .eq .v .g{font-size:26px; display:block;}
+  .eq .v small{font-size:11px; color:var(--soft);}
+  .eq .op{font-size:20px; font-weight:700; color:var(--soft);}
+  .eq .r{background:var(--hira); color:#fff; border-radius:10px; padding:6px 14px; text-align:center;}
+  .eq .r .g{font-size:28px; display:block;}
+  .eq .r small{font-size:11px; opacity:.85;}
+
+  /* cards de leitura */
+  .vogal{background:#fff; border:1px solid var(--line); border-radius:16px; padding:14px 16px; margin:12px 0;
+    display:flex; gap:16px; align-items:flex-start;}
+  .vg{font-size:56px; line-height:1; color:var(--hira); background:var(--hira-bg);
+    border-radius:14px; padding:12px 16px; text-align:center; min-width:92px;}
+  .vg small{display:block; font-size:14px; color:var(--soft); font-family:inherit; margin-top:4px;}
+  .vinfo{flex:1; font-size:14.5px;}
+  .vinfo b.som{color:var(--indigo); font-size:15px;}
+  .vinfo .mn{margin-top:6px;}
+  .alerta{background:#FBE9E6; border-left:5px solid var(--hanko); border-radius:0 12px 12px 0;
+    padding:12px 16px; margin:16px 0; font-size:14.5px;}
+
+  /* drill */
+  .drill{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin:14px 0;}
+  .card{width:84px; height:100px; perspective:600px; cursor:pointer;}
+  .inner{position:relative; width:100%; height:100%; transition:transform .4s; transform-style:preserve-3d;}
+  .card.flip .inner{transform:rotateY(180deg);}
+  .face{position:absolute; inset:0; backface-visibility:hidden; border-radius:14px;
+    display:flex; align-items:center; justify-content:center; border:1.5px solid var(--line);}
+  .frente{background:#fff; font-size:40px;}
+  .verso{background:var(--indigo); color:#fff; font-size:23px; font-weight:700; transform:rotateY(180deg);}
+  .drill-cap{text-align:center; font-size:13px; color:var(--indigo); font-weight:600; margin-bottom:4px;}
+
+  /* palavras */
+  .palavras{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin:14px 0;}
+  .pal{background:#fff; border:1.5px solid var(--line); border-radius:14px; padding:13px 10px;
+    text-align:center; cursor:pointer;}
+  .pal .w{font-size:30px;}
+  .pal .resp{display:none; margin-top:8px; font-size:13.5px;}
+  .pal .resp b{color:var(--hira);}
+  .pal.aberta .resp{display:block;}
+  .pal .toque{font-size:11.5px; color:var(--indigo); margin-top:6px;}
+  .pal.aberta .toque{display:none;}
+
+  /* caderno de escrita */
+  .regras{background:#fff; border:1px solid var(--line); border-radius:14px; padding:12px 16px; margin:12px 0; font-size:14px;}
+  .licao{background:#fff; border:1px solid var(--line); border-radius:18px; padding:16px; margin:20px 0;}
+  .licao-h{display:flex; align-items:baseline; gap:12px; margin-bottom:10px; flex-wrap:wrap;}
+  .licao-h .g{font-size:36px; color:var(--hira);}
+  .licao-h .nome{font-weight:700; font-size:17px;}
+  .licao-h .som2{color:var(--soft); font-size:13.5px;}
+  .zona{display:flex; gap:16px; flex-wrap:wrap; align-items:flex-start;}
+  .anim-box{text-align:center;}
+  .anim-box svg{width:180px; height:180px; background:var(--paper); border:1.5px solid var(--line); border-radius:14px;}
+  .btn{margin-top:8px; border:1.5px solid var(--indigo); color:var(--indigo); background:#fff;
+    border-radius:10px; padding:6px 12px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit;}
+  .btn:active{background:var(--indigo); color:#fff;}
+  .passos{flex:1; min-width:240px;}
+  .passos-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .passo{text-align:center;}
+  .passo svg{width:84px; height:84px; background:var(--paper); border:1.5px dashed var(--line); border-radius:12px;}
+  .passo .lbl{font-size:11.5px; font-weight:700; color:var(--hira); margin-top:2px;}
+  .instr{margin-top:8px; font-size:13.5px;}
+  .instr .n{display:inline-block; background:var(--hira); color:#fff; border-radius:50%;
+    width:19px; height:19px; text-align:center; line-height:19px; font-size:11.5px; font-weight:700; margin-right:6px;}
+  .pad-area{margin-top:12px;}
+  .pad-t{font-size:13px; font-weight:700; color:var(--indigo); margin-bottom:6px;}
+  .pad{position:relative; width:min(240px,80vw); height:min(240px,80vw); border:2px solid var(--indigo);
+    border-radius:16px; background:#fff; touch-action:none; overflow:hidden;}
+  .pad svg,.pad canvas{position:absolute; inset:0; width:100%; height:100%;}
+  .homework{background:#fff; border:1.5px dashed var(--indigo); border-radius:14px; padding:16px; margin-top:16px; font-size:14.5px;}
+  .btn-som{border:1.5px solid var(--hira); color:var(--hira); background:var(--hira-bg);
+    border-radius:999px; padding:4px 12px; font-size:13.5px; font-weight:700; cursor:pointer; font-family:inherit;}
+  .btn-som:active{background:var(--hira); color:#fff;}
+  .btn-som[disabled]{opacity:.45; cursor:not-allowed;}
+  .som-aviso{background:#FFF4E5; border-left:5px solid #E0A030; border-radius:0 12px 12px 0;
+    padding:10px 14px; margin:12px 0; font-size:13.5px; display:none;}
+  footer{margin-top:48px; font-size:12.5px; color:var(--soft); border-top:1px solid var(--line); padding-top:14px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="stamp">Etapa 2 · Bloco 2 de 10 · linha か</span>
+  <h1>A mágica do hiragana: <span class="jp">か・き・く・け・こ</span></h1>
+  <p>Hoje você descobre o segredo que torna o hiragana <i>fácil</i>: a partir de agora, <b>cada linha nova é só uma consoante grudada nas 5 vogais que você já sabe</b>. Hoje é o som "K":</p>
+
+  <div class="eq"><span class="k">K</span><span class="op">+</span><span class="v"><span class="g jp">あ</span><small>a</small></span><span class="op">=</span><span class="r"><span class="g jp">か</span><small>ka</small></span></div>
+  <div class="eq"><span class="k">K</span><span class="op">+</span><span class="v"><span class="g jp">い</span><small>i</small></span><span class="op">=</span><span class="r"><span class="g jp">き</span><small>ki</small></span></div>
+  <div class="eq"><span class="k">K</span><span class="op">+</span><span class="v"><span class="g jp">う</span><small>u</small></span><span class="op">=</span><span class="r"><span class="g jp">く</span><small>ku</small></span></div>
+  <div class="eq"><span class="k">K</span><span class="op">+</span><span class="v"><span class="g jp">え</span><small>e</small></span><span class="op">=</span><span class="r"><span class="g jp">け</span><small>ke</small></span></div>
+  <div class="eq"><span class="k">K</span><span class="op">+</span><span class="v"><span class="g jp">お</span><small>o</small></span><span class="op">=</span><span class="r"><span class="g jp">こ</span><small>ko</small></span></div>
+
+  <p style="margin-top:12px;">Os desenhos são novos, mas os <b>sons você já tem em português</b>: ka de "casa", qui de "quilo", ku de "cubo", quê (com ê firme!), cô de "coco" (com ô firme!). E o ritmo continua o mesmo: cada símbolo = 1 batida.</p>
+
+  <h2>1 · Conheça os cinco</h2>
+
+  <div class="vogal">
+    <div class="vg jp">か<small>ka</small></div>
+    <div class="vinfo"><b class="som">Soa como "ca" de casa.</b>
+      <div class="mn">🧠 <b>Memorização com história real:</b> "ka" (<span class="jp">蚊</span>) é literalmente <b>MOSQUITO</b> em japonês! E olha o desenho: o pinguinho separado à direita é o mosquito voando do lado. Impossível esquecer.</div>
+    </div>
+  </div>
+
+  <div class="vogal">
+    <div class="vg jp">き<small>ki</small></div>
+    <div class="vinfo"><b class="som">Soa como "qui" de quilo.</b>
+      <div class="mn">🧠 <b>Memorização:</b> parece uma <b>chave antiga</b> vista de lado (e do inglês, <i>key</i> = "ki" de brinde 🔑).</div>
+      <div class="mn">⚠️ <b>Segredo do き:</b> na letra <i>de fôrma</i> (fontes de computador) a barriguinha de baixo aparece grudada; na letra <i>de mão</i> ela fica <b>separada</b> — como nosso "a" impresso vs "a" manuscrito. Você vai escrever com ela separada, e é assim que a animação abaixo mostra.</div>
+    </div>
+  </div>
+
+  <div class="vogal">
+    <div class="vg jp">く<small>ku</small></div>
+    <div class="vinfo"><b class="som">Soa como "cu" de cubo</b> (lábios relaxados, sem biquinho).
+      <div class="mn">🧠 <b>Memorização:</b> o <b>bico do CUco</b> abrindo: "cu-co!" — e é o símbolo mais fácil do hiragana inteiro: um traço só.</div>
+    </div>
+  </div>
+
+  <div class="vogal">
+    <div class="vg jp">け<small>ke</small></div>
+    <div class="vinfo"><b class="som">Soa como "quê"</b> — ê fechado e firme até o fim.
+      <div class="mn">🧠 <b>Memorização:</b> uma <b>porteira entreaberta</b>: "QUEm deixou a porteira aberta?"</div>
+    </div>
+  </div>
+
+  <div class="vogal">
+    <div class="vg jp">こ<small>ko</small></div>
+    <div class="vinfo"><b class="som">Soa como "cô" de coco</b> — ô fechado e firme.
+      <div class="mn">🧠 <b>Memorização:</b> duas <b>COstelinhas</b> deitadas, uma sorrindo pra outra.</div>
+    </div>
+  </div>
+
+  <h2>2 · Treino relâmpago (misturado com as vogais!)</h2>
+  <div class="drill-cap">Regra de professor: misturar o novo com o velho fixa os dois. Fala o som ANTES de virar 👇</div>
+  <div class="drill" id="drill"></div>
+
+  <h2>3 · Palavras de verdade — agora com 10 símbolos</h2>
+  <p>Com as vogais + linha か, seu vocabulário explode. Lê em voz alta, batida por batida:</p>
+  <div class="palavras">
+    <div class="pal" onclick="this.classList.add('aberta')"><div class="w jp">かお</div><div class="toque">toque para conferir</div><div class="resp"><b>ka-o</b> · rosto 🙂</div></div>
+    <div class="pal" onclick="this.classList.add('aberta')"><div class="w jp">あか</div><div class="toque">toque para conferir</div><div class="resp"><b>a-ka</b> · vermelho 🔴</div></div>
+    <div class="pal" onclick="this.classList.add('aberta')"><div class="w jp">かき</div><div class="toque">toque para conferir</div><div class="resp"><b>ka-ki</b> · caqui 🍂 sim, a fruta! O português importou essa palavra do japonês.</div></div>
+    <div class="pal" onclick="this.classList.add('aberta')"><div class="w jp">えき</div><div class="toque">toque para conferir</div><div class="resp"><b>e-ki</b> · estação de trem 🚉</div></div>
+    <div class="pal" onclick="this.classList.add('aberta')"><div class="w jp">ここ</div><div class="toque">toque para conferir</div><div class="resp"><b>ko-ko</b> · aqui 📍</div></div>
+    <div class="pal" onclick="this.classList.add('aberta')"><div class="w jp">こえ</div><div class="toque">toque para conferir</div><div class="resp"><b>ko-e</b> · voz 🗣️</div></div>
+    <div class="pal" onclick="this.classList.add('aberta')"><div class="w jp">いけ</div><div class="toque">toque para conferir</div><div class="resp"><b>i-ke</b> · laguinho 🪷</div></div>
+    <div class="pal" onclick="this.classList.add('aberta')"><div class="w jp">こい</div><div class="toque">toque para conferir</div><div class="resp"><b>ko-i</b> · carpa 🐟 a famosa carpa "koi" dos laguinhos!</div></div>
+  </div>
+
+  <h2>4 · Caderno de escrita</h2>
+  <div class="regras">📏 Lembra das regrinhas: <b>cima → baixo</b>, <b>esquerda → direita</b>, <b>pinguinho solto por último</b> (olha o mosquito do か!). Bolinha vermelha = onde a caneta encosta.</div>
+  <div id="som-aviso" class="som-aviso"></div>
+  <div id="licoes"></div>
+
+  <div class="homework">
+    ✍️ <b>Dever de casa do Bloco 2:</b> ① treinar os 5 novos no quadro do dedo até sair sem olhar · ② cobrir a coluna <span class="jp">かきくけこ</span> da folha ごじゅうおん (5x cada + 2x sem olhar) · ③ escrever no papel, de memória, três palavras de hoje: <span class="jp">かお</span>, <span class="jp">あか</span> e <span class="jp">ここ</span> · ④ 5 min de app misturando vogais + linha か.
+  </div>
+
+  <footer>Japonês do zero · Bloco 2/10 · próximo: linha さ (sa·shi·su·se·so) · Traçados: base <b>KanjiVG</b> © Ulrich Apel, CC BY-SA 3.0 (kanjivg.tagaini.net) · turma にほんご５.</footer>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <marker id="arrw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2F7D5B"/>
+    </marker>
+  </defs>
+</svg>
+
+<script>
+/* ---------- drill misturado ---------- */
+const CARDS = [["か","ka"],["う","u"],["き","ki"],["お","o"],["く","ku"],["け","ke"],["い","i"],["こ","ko"],["あ","a"],["え","e"]];
+const drill = document.getElementById('drill');
+CARDS.forEach(([g,r]) => {
+  const c = document.createElement('div'); c.className = 'card';
+  c.innerHTML = '<div class="inner"><div class="face frente jp">'+g+'</div><div class="face verso">'+r+'</div></div>';
+  c.addEventListener('click', () => c.classList.toggle('flip'));
+  drill.appendChild(c);
+});
+
+/* ---------- caderno de escrita ---------- */
+const DATA = {
+  "か": ["M24.62,38.62c1.88,1.62,4.65,2.33,8.62,1c25.5-8.5,29.5-4.13,29.5,7.62c0,9.38-1.24,17.46-4.25,25.25c-7.62,19.76-10.87,17.39-16.12,10.89",
+         "M48.5,17.5c1,1.38,1.29,4.7,0.5,7.12c-5,15.25-18.02,40.93-19.62,43.88c-3.12,5.75-6.38,11.88-9.38,16.25",
+         "M77.37,31.62c7.5,6.88,13.25,15.75,15,24.88"],
+  "き": ["M30.5,30.25c1.88,0.75,4.64,1.06,5.88,0.88c6.75-1,22.25-4.5,26.5-6c2.17-0.76,3.5-1.25,4.88-2.12",
+         "M36.25,48.7c2.01,0.85,4.97,1.2,6.29,0.99c7.23-1.13,23.82-5.09,28.37-6.79c2.32-0.86,3.75-1.41,5.22-2.4",
+         "M42,14.12c1.5,0.88,3.13,2.94,4,5.12c5.5,13.76,16,29.26,26.37,40.76c7.64,8.47,9.12,9.38-6,3.88",
+         "M33.75,83.25c10.62,9.75,27.25,8.62,38.12,5"],
+  "く": ["M60.66,15c0.5,1.62,0.35,5.44-1,7.38c-6.75,9.62-14.3,19.08-18.62,24.5c-4,5-3.79,7.03-0.88,11c5.5,7.5,12.75,18.75,17.62,27.25c1.48,2.59,2.75,4.75,4.5,8.62"],
+  "け": ["M24.67,19.75c1.25,1.5,2.62,3.75,2.12,6.38c-3,15.88-6.5,29.5-4.88,44.62c2.02,18.84,2.25,4.75,6.75-3.5",
+         "M53.67,38.62c2.12,1.38,4.28,1.89,6.88,1.5c8.25-1.25,15.39-2.57,20.62-4c2.76-0.74,5.26-1.12,6.88-1.12",
+         "M71.67,14.38c2.13,1.37,2.88,3.35,2.88,5.12c0,11.62,0.12,20.38,0.12,30.12c0,20.75-0.62,30.88-12.5,42.25"],
+  "こ": ["M34.75,26.75c1.12,0.88,2.91,2.01,6,1.5c7.62-1.25,14.11-2.56,22.38-2.62c15.5-0.12,5.88,5-5.75,9",
+         "M30,68.12c2.25,14.5,15.26,17.96,31,16.75c6.5-0.5,11.88-1.25,17.62-2.88"]
+};
+const SOM = {"か":"ca de casa · 3 traços","き":"qui de quilo · 4 traços","く":"cu de cubo · 1 traço (o mais fácil!)","け":"quê firme · 3 traços","こ":"cô de coco · 2 traços"};
+const INSTR = {
+  "か": ["Entra deitado pela esquerda, dobra descendo e fecha a barriga com um ganchinho para dentro.",
+         "Lá de cima, desce em diagonal cortando o traço 1 e escorrega para a esquerda.",
+         "O mosquito 🦟: pinguinho curto e separado, no alto à direita."],
+  "き": ["Tracinho deitado, subindo de leve.",
+         "Outro tracinho deitado embaixo, um pouco mais comprido.",
+         "De cima, desce inclinado atravessando os dois e termina com um ganchinho.",
+         "Embaixo, SEPARADA: a barriguinha sorrindo (na letra de mão ela não encosta no resto)."],
+  "く": ["Um traço só: desce em diagonal para a esquerda até o meio e volta descendo para a direita — o bico do cuco abrindo."],
+  "け": ["Desce pela esquerda, curvando, e termina num ganchinho subindo.",
+         "Tracinho deitado no alto, do lado direito.",
+         "Desce cortando o tracinho, bem comprido, curvando para a esquerda no final."],
+  "こ": ["Tracinho deitado em cima, com ganchinho no fim.",
+         "Embaixo, o sorriso: curva deitada subindo na ponta."]
+};
+/* ---- áudio: pronúncia usando a voz de japonês do navegador ---- */
+const ROMAJI = {"あ":"a","い":"i","う":"u","え":"e","お":"o","か":"ka","き":"ki","く":"ku","け":"ke","こ":"ko"};
+function vozJaponesa(){
+  const vozes = speechSynthesis.getVoices();
+  return vozes.find(v => v.lang && v.lang.toLowerCase().replace('_','-').startsWith('ja')) || null;
+}
+function falar(ch, btn){
+  const status = (t, ms) => { if(!btn) return; const orig = '🔊 ouvir'; btn.textContent = t; if(ms) setTimeout(() => btn.textContent = orig, ms); };
+  if(!('speechSynthesis' in window)){ status('🔇 sem suporte', 2500); mostrarAviso('Este navegador não tem síntese de voz. Abra o arquivo no Chrome ou Edge.'); return; }
+  if(speechSynthesis.getVoices().length === 0){
+    status('⏳ carregando…');
+    speechSynthesis.onvoiceschanged = () => { speechSynthesis.onvoiceschanged = null; falar(ch, btn); };
+    setTimeout(() => { if(btn.textContent.startsWith('⏳')) falar(ch, btn); }, 1500);
+    return;
+  }
+  speechSynthesis.cancel();
+  const v = vozJaponesa();
+  const u = new SpeechSynthesisUtterance(v ? ch : (ROMAJI[ch] || ch));
+  if(v){ u.voice = v; u.lang = v.lang; }
+  else { u.lang = 'pt-BR'; mostrarAviso('Sem voz de japonês instalada: estou lendo a letra em romaji com a voz disponível. Para o som real, instale o japonês nas configurações de texto-para-fala do sistema.'); }
+  u.rate = 0.75; u.pitch = 1;
+  u.onstart = () => status('🔈 falando…');
+  u.onend = () => status('🔊 ouvir');
+  u.onerror = e => { status('🔇 erro', 2500); mostrarAviso('O navegador bloqueou o áudio ('+(e.error||'')+'). Se está vendo isto numa pré-visualização, baixe o arquivo e abra-o direto no Chrome/Edge.'); };
+  speechSynthesis.speak(u);
+}
+function mostrarAviso(msg){ const av = document.getElementById('som-aviso'); if(!av) return; av.textContent = '🔇 ' + msg; av.style.display = 'block'; }
+if('speechSynthesis' in window){ speechSynthesis.getVoices(); }
+const NS = "http://www.w3.org/2000/svg";
+const cont = document.getElementById('licoes');
+const animadores = [];
+function svgEl(tag, attrs){ const e = document.createElementNS(NS, tag); for(const k in attrs) e.setAttribute(k, attrs[k]); return e; }
+function baseSvg(){ return svgEl('svg', {viewBox:"0 0 109 109"}); }
+function pathEl(d, opts){ return svgEl('path', Object.assign({d:d, fill:"none", "stroke-linecap":"round", "stroke-linejoin":"round"}, opts)); }
+
+Object.keys(DATA).forEach(ch => {
+  const strokes = DATA[ch];
+  const sec = document.createElement('div'); sec.className = 'licao';
+  sec.innerHTML = '<div class="licao-h"><span class="g jp">'+ch+'</span><span class="nome">Como escrever '+ch+'</span><span class="som2">'+SOM[ch]+'</span></div>';
+  const btnSom = document.createElement('button'); btnSom.className = 'btn-som'; btnSom.type = 'button';
+  btnSom.textContent = '🔊 ouvir'; btnSom.title = 'Ouvir a pronúncia de '+ch;
+  btnSom.addEventListener('click', () => falar(ch, btnSom));
+  sec.querySelector('.licao-h').appendChild(btnSom);
+  const zona = document.createElement('div'); zona.className = 'zona';
+
+  const animBox = document.createElement('div'); animBox.className = 'anim-box';
+  const asvg = baseSvg();
+  strokes.forEach(d => asvg.appendChild(pathEl(d, {stroke:"#E4DED2","stroke-width":6})));
+  const animPaths = strokes.map(d => { const p = pathEl(d, {stroke:"#26241F","stroke-width":6}); asvg.appendChild(p); return p; });
+  animBox.appendChild(asvg);
+  const btn = document.createElement('button'); btn.className = 'btn'; btn.textContent = '▶ desenhar de novo';
+  animBox.appendChild(document.createElement('br')); animBox.appendChild(btn);
+  function animar(){
+    let delay = 300;
+    animPaths.forEach(p => {
+      const len = p.getTotalLength();
+      p.style.transition = 'none';
+      p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
+      p.getBoundingClientRect();
+      const dur = Math.max(len*14, 500);
+      setTimeout(() => { p.style.transition = 'stroke-dashoffset '+dur+'ms linear'; p.style.strokeDashoffset = 0; }, delay);
+      delay += dur + 350;
+    });
+  }
+  btn.addEventListener('click', animar);
+  animadores.push(animar);
+
+  const passos = document.createElement('div'); passos.className = 'passos';
+  const row = document.createElement('div'); row.className = 'passos-row';
+  strokes.forEach((d, k) => {
+    const box = document.createElement('div'); box.className = 'passo';
+    const s = baseSvg();
+    strokes.forEach((d2, j) => {
+      if (j < k) s.appendChild(pathEl(d2, {stroke:"#26241F","stroke-width":6}));
+      else if (j > k) s.appendChild(pathEl(d2, {stroke:"#26241F","stroke-width":6, opacity:0.08}));
+    });
+    const guia = pathEl(d, {stroke:"#2F7D5B","stroke-width":5,"stroke-dasharray":"7 5","marker-end":"url(#arrw)"});
+    s.appendChild(guia);
+    box.appendChild(s);
+    const lbl = document.createElement('div'); lbl.className = 'lbl'; lbl.textContent = 'traço '+(k+1);
+    box.appendChild(lbl);
+    row.appendChild(box);
+    requestAnimationFrame(() => {
+      const p0 = guia.getPointAtLength(0);
+      s.appendChild(svgEl('circle', {cx:p0.x, cy:p0.y, r:5, fill:"#C63D2F"}));
+    });
+  });
+  passos.appendChild(row);
+  const ol = document.createElement('div'); ol.className = 'instr';
+  ol.innerHTML = INSTR[ch].map((t,i) => '<div style="margin:5px 0"><span class="n">'+(i+1)+'</span>'+t+'</div>').join('');
+  passos.appendChild(ol);
+  zona.appendChild(animBox); zona.appendChild(passos);
+  sec.appendChild(zona);
+
+  const padArea = document.createElement('div'); padArea.className = 'pad-area';
+  padArea.innerHTML = '<div class="pad-t">🖐️ Sua vez: cubra o tracejado com o dedo (bolinha = começo)</div>';
+  const pad = document.createElement('div'); pad.className = 'pad';
+  const gsvg = baseSvg();
+  strokes.forEach(d => {
+    const g = pathEl(d, {stroke:"#B9B2A2","stroke-width":5,"stroke-dasharray":"6 6"});
+    gsvg.appendChild(g);
+    requestAnimationFrame(() => {
+      const p0 = g.getPointAtLength(0);
+      gsvg.appendChild(svgEl('circle', {cx:p0.x, cy:p0.y, r:4.5, fill:"#C63D2F"}));
+    });
+  });
+  const cv = document.createElement('canvas');
+  pad.appendChild(gsvg); pad.appendChild(cv);
+  padArea.appendChild(pad);
+  const btns = document.createElement('div'); btns.style.marginTop = '8px';
+  const limpar = document.createElement('button'); limpar.className = 'btn'; limpar.textContent = '🧽 limpar';
+  btns.appendChild(limpar); padArea.appendChild(btns);
+  sec.appendChild(padArea);
+  cont.appendChild(sec);
+
+  let ctx = null, desenhando = false;
+  function setupCanvas(){
+    const r = pad.getBoundingClientRect(); const dpr = window.devicePixelRatio || 1;
+    cv.width = r.width*dpr; cv.height = r.height*dpr;
+    const c = cv.getContext('2d'); c.scale(dpr, dpr);
+    c.lineCap = 'round'; c.lineJoin = 'round'; c.lineWidth = 10; c.strokeStyle = 'rgba(47,125,91,.85)';
+    return c;
+  }
+  requestAnimationFrame(() => { ctx = setupCanvas(); });
+  function pos(ev){ const r = cv.getBoundingClientRect(); return [ev.clientX-r.left, ev.clientY-r.top]; }
+  pad.addEventListener('pointerdown', ev => { if(!ctx) ctx = setupCanvas(); desenhando = true; const [x,y] = pos(ev); ctx.beginPath(); ctx.moveTo(x,y); ev.preventDefault(); });
+  pad.addEventListener('pointermove', ev => { if(!desenhando) return; const [x,y] = pos(ev); ctx.lineTo(x,y); ctx.stroke(); ev.preventDefault(); });
+  window.addEventListener('pointerup', () => desenhando = false);
+  limpar.addEventListener('click', () => { const r = pad.getBoundingClientRect(); ctx.clearRect(0,0,r.width,r.height); });
+});
+window.addEventListener('load', () => { animadores.forEach((a,i) => setTimeout(a, i*400)); });
+</script>
+</body>
+</html>

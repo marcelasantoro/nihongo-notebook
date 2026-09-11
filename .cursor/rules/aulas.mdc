@@ -1,0 +1,112 @@
+---
+description: Convencoes do caderno de japones — onde as coisas moram, o que uma aula precisa ter, e o que nao fazer
+alwaysApply: true
+---
+
+# nihongo-notebook — convencoes
+
+Site estatico, sem build e sem backend. Detalhes do pipeline em
+[docs/architecture.md](../../docs/architecture.md). O contrato de uma aula em
+[docs/CONTRATO-AULA.md](../../docs/CONTRATO-AULA.md).
+
+## A regra que vem antes de todas
+
+**Nao escreva conteudo de aula de japones.** Quem gera o HTML das aulas e a
+Marcela, por fora deste repositorio. O repositorio recebe o arquivo, publica e
+poe o botao de pronuncia por cima. Se parecer que falta uma aula, pergunte —
+nao preencha.
+
+## Onde as coisas moram
+
+- `site/` e a fonte da verdade: o que esta la e exatamente o que fica no ar.
+- `site/index.html` — o hub. Autocontido (CSS e JS inline). Ele **so le** o
+  indice; nunca escreve.
+- `site/aulas/<slug>/index.html` — uma pasta por aula, `<slug>` em kebab-case sem
+  acento. O arquivo e da Marcela: nao reformate, nao reescreva, nao "melhore".
+- `site/data/aulas.json` — o indice da listagem. Quem escreve e
+  `scripts/nova_aula.py`.
+- `site/assets/js/pronuncia.js` — o botao de ouvir, compartilhado.
+- `site/assets/css/aula.css` — folha **opcional**. Nenhuma aula e obrigada a usar.
+- `site/assets/audio/` — MP3 de pronuncia e o `audio.json` que mapeia texto para
+  arquivo.
+- `ingest/` — git-ignored. Material bruto da aula (audio do professor, foto do
+  caderno). Nunca commitado.
+
+## Paginas autocontidas
+
+- CSS e JS inline na propria pagina. **Zero CDN** — nem fonte, nem biblioteca.
+  A pagina precisa abrir offline e nao depender de terceiro estar no ar.
+- Para grafico ou animacao, SVG/`<canvas>` na mao em vez de puxar biblioteca.
+- Fonte japonesa: pilha do sistema
+  (`"Hiragino Sans","Yu Gothic","Noto Sans JP","Meiryo",sans-serif`), nunca
+  webfont baixada.
+- `<title>` claro: o hub usa como rotulo quando falta titulo no indice.
+
+## Pronuncia
+
+Marque com `data-ouvir` e inclua o script uma vez:
+
+```html
+<span data-ouvir="あ">あ</span>
+<script type="module" src="../../assets/js/pronuncia.js"></script>
+```
+
+- Marque o `<span>` de dentro, nao o paragrafo: o botao entra logo depois do
+  elemento marcado.
+- `speechSynthesis` proprio na aula nao esta proibido, mas saiba que o Windows
+  nao vem com voz japonesa instalada. Prefira `data-ouvir`, que ja trata os tres
+  casos e avisa quando esta aproximando.
+- Som real de verdade e arquivo em `site/assets/audio/` registrado no
+  `audio.json`. Isso funciona ate para aula ja publicada, sem reeditar o HTML.
+
+## Mexer em `pronuncia.js`
+
+- A traducao para grafia portuguesa e um de-para **por silaba**. Nao troque por
+  regex encadeada sobre a string inteira: uma substituicao come a anterior
+  (`chi` → `tchi` ainda contem `hi`).
+- Katakana nao tem tabela propria — e convertido para hiragana na entrada
+  (deslocamento `0x60`). Mantenha assim, senao as duas tabelas saem de sincronia.
+- Caminho de asset sai de `import.meta.url`, nunca do endereco do documento.
+
+## Paleta
+
+Papel washi, tinta, indigo e vermelho de carimbo. Vale para o hub, para o
+`aula.css` e para aula nova que nao tenha estilo proprio.
+
+```
+--paper:#FAF7F0   --ink:#26241F    --soft:#6B6557    --indigo:#2E4272
+--hira:#2F7D5B    --hira-bg:#E4F2EA  --hanko:#C63D2F  --line:#E4DED2
+```
+
+Titulo em serifa (`Iowan Old Style, Georgia, serif`), corpo em sans do sistema.
+
+## Toda pagina gerada deve ser
+
+- HTML5 semanticamente correto.
+- Responsiva por padrao (o caderno e usado no celular).
+- Coerente visualmente: hierarquia clara, espacamento, tipografia legivel.
+
+## Publicar
+
+`git push` na `main` dispara `.github/workflows/pages.yml`. Nao ha build.
+
+- O job precisa de `pages: write` e `id-token: write`.
+- `configure-pages` roda **sem** `enablement: true`: o `GITHUB_TOKEN` nao pode
+  criar o site do Pages e a run morre com `Resource not accessible by
+  integration`.
+
+Local: `python -m http.server --directory site 8080`. Por `file://` nao funciona
+(fetch bloqueado, modulos ES nao carregam).
+
+## Inventario de `site/assets/audio/`
+
+Lista viva do que existe na pasta e para que serve. So use um arquivo listado
+aqui sem perguntar.
+
+- (vazio — nenhum audio gravado ainda; os botoes caem na voz do sistema ou na
+  aproximacao)
+
+Se aparecer um arquivo em `site/assets/audio/` que nao esta nesta lista (ignorando
+`audio.json`), pare e pergunte o que e antes de referenciar. Depois da resposta,
+acrescente aqui (nome, o que é, quais aulas usam) para a proxima conversa nao
+precisar perguntar de novo.

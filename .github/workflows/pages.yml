@@ -1,0 +1,42 @@
+name: "Publicar site"
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Exigidas pelo deploy-pages. Sem 'pages: write' e 'id-token: write' a run nao
+# morre no checkout, morre la no passo de deploy, o que engana na leitura do log.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Uma publicacao por vez, sem cancelar a que estiver rodando, para nao deixar o
+# site num estado pela metade.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Sem 'enablement: true' de proposito. O GITHUB_TOKEN nao tem permissao
+      # para criar o site do Pages e a run morre com "Resource not accessible by
+      # integration". O Pages e ligado uma vez pela API do repositorio
+      # (build_type=workflow); daqui pra frente este passo so le a configuracao.
+      - uses: actions/configure-pages@v5
+
+      # site/ ja e HTML puro. Nao ha build: o que esta na pasta e o que vai ao ar.
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: deploy
+        uses: actions/deploy-pages@v4

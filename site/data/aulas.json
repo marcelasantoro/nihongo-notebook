@@ -1,0 +1,46 @@
+{
+  "formato": "nihongo-notebook/aulas@1",
+  "aulas": [
+    {
+      "slug": "tres-sistemas-de-escrita",
+      "titulo": "Japonês do zero · Etapa 0 — Os três sistemas de escrita",
+      "data": "2026-09-10",
+      "resumo": "Hiragana, katakana e kanji: o que e cada um e quando se usa",
+      "tags": [
+        "etapa-0",
+        "escrita"
+      ]
+    },
+    {
+      "slug": "hiragana-vogais",
+      "titulo": "Caderno de escrita · あいうえお traço a traço",
+      "data": "2026-09-10",
+      "resumo": "Como escrever あいうえお traco a traco, com animacao e quadro para treinar",
+      "tags": [
+        "bloco-1",
+        "hiragana",
+        "tracado"
+      ]
+    },
+    {
+      "slug": "hiragana-linha-ka",
+      "titulo": "Bloco 2 · A linha か — ka ki ku ke ko",
+      "data": "2026-09-10",
+      "resumo": "A linha か: ka ki ku ke ko, traco a traco",
+      "tags": [
+        "bloco-2",
+        "hiragana",
+        "tracado"
+      ]
+    },
+    {
+      "slug": "exemplo-pronuncia",
+      "titulo": "Como funciona o botão de pronúncia",
+      "data": "2026-09-10",
+      "resumo": "Página de demonstração: o contrato do data-ouvir e os estilos disponíveis",
+      "tags": [
+        "exemplo"
+      ]
+    }
+  ]
+}

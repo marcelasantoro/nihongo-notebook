@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caderno de escrita · あいうえお traço a traço</title>
+<style>
+  :root{
+    --paper:#FAF7F0; --ink:#26241F; --soft:#6B6557; --indigo:#2E4272;
+    --hira:#2F7D5B; --hira-bg:#E4F2EA; --hanko:#C63D2F; --line:#E4DED2;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--paper); color:var(--ink);
+    font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;
+    line-height:1.6; font-size:16px;}
+  .wrap{max-width:760px; margin:0 auto; padding:32px 16px 80px;}
+  h1{font-family:Iowan Old Style,Georgia,serif; font-size:clamp(23px,5vw,30px); margin-bottom:8px;}
+  p{margin-bottom:12px; max-width:64ch;}
+  .stamp{display:inline-block; border:2px solid var(--hanko); color:var(--hanko);
+    border-radius:8px; padding:2px 10px; font-size:13px; font-weight:600; margin-bottom:12px;}
+  .jp{font-family:"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;}
+  .regras{background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin:14px 0; font-size:14.5px;}
+  .regras b{color:var(--indigo);}
+
+  .licao{background:#fff; border:1px solid var(--line); border-radius:18px; padding:18px 16px; margin:26px 0;}
+  .licao-h{display:flex; align-items:baseline; gap:12px; margin-bottom:12px; flex-wrap:wrap;}
+  .licao-h .g{font-size:40px; color:var(--hira);}
+  .licao-h .nome{font-weight:700; font-size:18px;}
+  .licao-h .som{color:var(--soft); font-size:14px;}
+
+  .zona{display:flex; gap:16px; flex-wrap:wrap; align-items:flex-start;}
+  .anim-box{text-align:center;}
+  .anim-box svg{width:200px; height:200px; background:var(--paper); border:1.5px solid var(--line); border-radius:14px;}
+  .btn{margin-top:8px; border:1.5px solid var(--indigo); color:var(--indigo); background:#fff;
+    border-radius:10px; padding:6px 14px; font-size:13.5px; font-weight:600; cursor:pointer; font-family:inherit;}
+  .btn:active{background:var(--indigo); color:#fff;}
+  .cap{font-size:12px; color:var(--soft); margin-top:4px;}
+
+  .passos{flex:1; min-width:250px;}
+  .passos-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .passo{text-align:center;}
+  .passo svg{width:96px; height:96px; background:var(--paper); border:1.5px dashed var(--line); border-radius:12px;}
+  .passo .lbl{font-size:12px; font-weight:700; color:var(--hira); margin-top:2px;}
+  .instr{margin-top:10px; font-size:14px;}
+  .instr li{margin:6px 0 6px 20px;}
+  .instr .n{display:inline-block; background:var(--hira); color:#fff; border-radius:50%;
+    width:20px; height:20px; text-align:center; line-height:20px; font-size:12px; font-weight:700; margin-right:6px;}
+
+  .pad-area{margin-top:16px;}
+  .pad-t{font-size:13.5px; font-weight:700; color:var(--indigo); margin-bottom:6px;}
+  .pad{position:relative; width:min(260px,80vw); height:min(260px,80vw); border:2px solid var(--indigo);
+    border-radius:16px; background:#fff; touch-action:none; overflow:hidden;}
+  .pad svg,.pad canvas{position:absolute; inset:0; width:100%; height:100%;}
+  .pad-btns{margin-top:8px; display:flex; gap:8px;}
+  .aviso{background:var(--hira-bg); border-left:5px solid var(--hira); border-radius:0 12px 12px 0;
+    padding:12px 16px; margin:18px 0; font-size:14.5px;}
+  .btn-som{border:1.5px solid var(--hira); color:var(--hira); background:var(--hira-bg);
+    border-radius:999px; padding:4px 12px; font-size:13.5px; font-weight:700; cursor:pointer; font-family:inherit;}
+  .btn-som:active{background:var(--hira); color:#fff;}
+  .btn-som[disabled]{opacity:.45; cursor:not-allowed;}
+  .som-aviso{background:#FFF4E5; border-left:5px solid #E0A030; border-radius:0 12px 12px 0;
+    padding:10px 14px; margin:12px 0; font-size:13.5px; display:none;}
+  footer{margin-top:48px; font-size:12.5px; color:var(--soft); border-top:1px solid var(--line); padding-top:14px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="stamp">Etapa 2 · Bloco 1 · Caderno de escrita</span>
+  <h1>Escrevendo <span class="jp">あ・い・う・え・お</span> traço a traço</h1>
+  <p>Igual caderno de alfabetização: a <b style="color:var(--hanko)">bolinha vermelha</b> é onde a caneta <b>encosta</b> no papel, a <b style="color:var(--hira)">linha verde tracejada</b> é o caminho que ela percorre, e a setinha mostra para onde ela vai. Um traço de cada vez.</p>
+
+  <div class="regras">📏 <b>As 3 regrinhas de ouro da escrita japonesa:</b> ① traços de <b>cima para baixo</b> · ② traços da <b>esquerda para a direita</b> · ③ pinguinhos e bolinhas soltas ficam <b>por último</b>. Se bater dúvida, essas três regras acertam quase sempre.</div>
+
+  <div id="som-aviso" class="som-aviso"></div>
+  <div id="licoes"></div>
+
+  <div class="aviso">✍️ <b>Como treinar:</b> para cada letra — 1º assista a animação 2 ou 3 vezes; 2º "escreva" com o dedo no quadro azul seguindo o tracejado; 3º só então vá para o papel (sua folha ごじゅうおん tem o pontilhado para cobrir). Mão devagar: capricho primeiro, velocidade depois.</div>
+
+  <footer>Japonês do zero · turma にほんご５ · Traçados oficiais: base <b>KanjiVG</b> © Ulrich Apel, licença CC BY-SA 3.0 (kanjivg.tagaini.net).</footer>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <marker id="arrw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2F7D5B"/>
+    </marker>
+  </defs>
+</svg>
+
+<script>
+const DATA = {
+  "あ": ["M31.01,33c0.88,0.88,2.75,1.82,5.25,1.75c8.62-0.25,20-2.12,29.5-4.25c1.51-0.34,4.62-0.88,6.62-0.5",
+         "M49.76,17.62c0.88,1,1.82,3.26,1.38,5.25c-3.75,16.75-6.25,38.13-5.13,53.63c0.41,5.7,1.88,10.88,3.38,13.62",
+         "M65.63,44.12c0.75,1.12,1.16,4.39,0.5,6.12c-4.62,12.26-11.24,23.76-25.37,35.76c-6.86,5.83-15.88,3.75-16.25-8.38c-0.34-10.87,13.38-23.12,32.38-26.74c12.42-2.37,27,1.38,30.5,12.75c4.05,13.18-3.76,26.37-20.88,30.49"],
+  "い": ["M21.5,29.66c2.01,2.17,2.61,4.68,2.17,7.43c-3.09,19.16-1.03,32.01,7.93,41.45c6.12,6.45,6.26,3.14,7.04-5.21",
+         "M72.96,36.51c9.44,8.05,17.79,18.82,18.41,33.83"],
+  "う": ["M42,15.5c5.62,2.12,9.62,3,12.88,3c8.27,0,8,1.12-0.38,5.5",
+         "M33,42.38c2.12,1.12,4.12,2.88,8.5,1.38c4.38-1.5,12.75-7.12,18.5-7c5.75,0.12,10.25,5,10.25,18c0,15.49-8.25,30.24-24.37,41.24"],
+  "え": ["M40.52,13.25c5.62,2.12,10,3,14.12,3c8.27,0,8,1.12-0.38,5.5",
+         "M32.52,45.12c1.88,1.25,4.5,1.75,7.38,0.62c3.29-1.29,17-7.88,21.25-9.88c4.25-2,8.32,0.04,4.38,4.62c-12.26,14.27-27.26,31.52-39.51,44.4c-3.26,3.42-0.58,3.54,1.5,1.37c13.5-14.12,18.12-20.12,23.62-20.12c7.13,0,3.5,16.75,6.75,22.38c3.25,5.63,19.12,3.75,26.12,2.12"],
+  "お": ["M22.88,35.12c1.38,1,3.62,2.38,6,2.12c2.38-0.26,19.62-5.12,21.12-5.74c1.5-0.62,4-1.25,5.88-2",
+         "M41.5,16.12c2.25,1,3.59,4.39,3.12,7.38c-2.5,16.12-3.37,45.53-2.25,58.38c0.75,8.62-0.64,10.45-7.12,7.12c-5.13-2.62-13.75-8-13.75-12.38c0-7.5,24.38-23.62,44.75-23.62c17.25,0,25,8.25,25,17.25c0,8.25-9.38,18.88-26.75,21",
+         "M73,22.12c5.38,2.62,8.88,5.88,10.62,8.25c2.27,3.08,0.38,4.5-1.12,5"]
+};
+const SOM = {"あ":"soa como o A de casa","い":"soa como o I de ilha","う":"soa como o U de uva (sem biquinho)","え":"soa como o Ê de você","お":"soa como o Ô de avô"};
+const INSTR = {
+  "あ": ["Encosta na bolinha e puxa uma linha deitada para a direita.",
+         "Lá de cima, desce atravessando a linha do meio, entortando de levinho no fim.",
+         "Encosta no meio, desce fazendo barriga para a esquerda, dá a volta por baixo e fecha o laço subindo para a direita."],
+  "い": ["Desce fazendo uma barriguinha e, no finzinho, dá um pulinho para cima (ganchinho).",
+         "Do lado direito, mais alto: um pinguinho curto descendo inclinado para dentro."],
+  "う": ["Um tracinho curto e deitado no topo — o chapeuzinho.",
+         "Embaixo, entra pela esquerda, faz a curva grande para a direita e desce escorregando para a esquerda, como um tobogã."],
+  "え": ["Um tracinho curto e inclinado no topo.",
+         "Desce em diagonal para a esquerda, faz uma dobradinha (volta um tiquinho) e termina deslizando o pezinho para a direita."],
+  "お": ["Uma linha deitada, curtinha.",
+         "Desce cortando a linha e, embaixo, faz a laçada: gira e fecha a barriga grande para a direita.",
+         "Por último, o pinguinho separado no canto de cima, à direita — a marca registrada do お (é ele que o diferencia do gêmeo あ!)."]
+};
+/* ---- áudio: pronúncia usando a voz de japonês do navegador ---- */
+const ROMAJI = {"あ":"a","い":"i","う":"u","え":"e","お":"o","か":"ka","き":"ki","く":"ku","け":"ke","こ":"ko"};
+function vozJaponesa(){
+  const vozes = speechSynthesis.getVoices();
+  return vozes.find(v => v.lang && v.lang.toLowerCase().replace('_','-').startsWith('ja')) || null;
+}
+function falar(ch, btn){
+  const status = (t, ms) => { if(!btn) return; const orig = '🔊 ouvir'; btn.textContent = t; if(ms) setTimeout(() => btn.textContent = orig, ms); };
+  if(!('speechSynthesis' in window)){ status('🔇 sem suporte', 2500); mostrarAviso('Este navegador não tem síntese de voz. Abra o arquivo no Chrome ou Edge.'); return; }
+  if(speechSynthesis.getVoices().length === 0){
+    status('⏳ carregando…');
+    speechSynthesis.onvoiceschanged = () => { speechSynthesis.onvoiceschanged = null; falar(ch, btn); };
+    setTimeout(() => { if(btn.textContent.startsWith('⏳')) falar(ch, btn); }, 1500);
+    return;
+  }
+  speechSynthesis.cancel();
+  const v = vozJaponesa();
+  const u = new SpeechSynthesisUtterance(v ? ch : (ROMAJI[ch] || ch));
+  if(v){ u.voice = v; u.lang = v.lang; }
+  else { u.lang = 'pt-BR'; mostrarAviso('Sem voz de japonês instalada: estou lendo a letra em romaji com a voz disponível. Para o som real, instale o japonês nas configurações de texto-para-fala do sistema.'); }
+  u.rate = 0.75; u.pitch = 1;
+  u.onstart = () => status('🔈 falando…');
+  u.onend = () => status('🔊 ouvir');
+  u.onerror = e => { status('🔇 erro', 2500); mostrarAviso('O navegador bloqueou o áudio ('+(e.error||'')+'). Se está vendo isto numa pré-visualização, baixe o arquivo e abra-o direto no Chrome/Edge.'); };
+  speechSynthesis.speak(u);
+}
+function mostrarAviso(msg){ const av = document.getElementById('som-aviso'); if(!av) return; av.textContent = '🔇 ' + msg; av.style.display = 'block'; }
+if('speechSynthesis' in window){ speechSynthesis.getVoices(); }
+const NS = "http://www.w3.org/2000/svg";
+const cont = document.getElementById('licoes');
+const animadores = [];
+
+function svgEl(tag, attrs){ const e = document.createElementNS(NS, tag); for(const k in attrs) e.setAttribute(k, attrs[k]); return e; }
+function baseSvg(){ const s = svgEl('svg', {viewBox:"0 0 109 109"}); return s; }
+function pathEl(d, opts){ return svgEl('path', Object.assign({d:d, fill:"none", "stroke-linecap":"round", "stroke-linejoin":"round"}, opts)); }
+
+Object.keys(DATA).forEach(ch => {
+  const strokes = DATA[ch];
+  const sec = document.createElement('div'); sec.className = 'licao';
+  sec.innerHTML = '<div class="licao-h"><span class="g jp">'+ch+'</span><span class="nome">Como escrever '+ch+'</span><span class="som">'+SOM[ch]+' · '+strokes.length+' traços</span></div>';
+  const btnSom = document.createElement('button'); btnSom.className = 'btn-som'; btnSom.type = 'button';
+  btnSom.textContent = '🔊 ouvir'; btnSom.title = 'Ouvir a pronúncia de '+ch;
+  btnSom.addEventListener('click', () => falar(ch, btnSom));
+  sec.querySelector('.licao-h').appendChild(btnSom);
+
+  const zona = document.createElement('div'); zona.className = 'zona';
+
+  /* ---- animação ---- */
+  const animBox = document.createElement('div'); animBox.className = 'anim-box';
+  const asvg = baseSvg();
+  strokes.forEach(d => asvg.appendChild(pathEl(d, {stroke:"#E4DED2","stroke-width":6})));
+  const animPaths = strokes.map(d => { const p = pathEl(d, {stroke:"#26241F","stroke-width":6}); asvg.appendChild(p); return p; });
+  animBox.appendChild(asvg);
+  const btn = document.createElement('button'); btn.className = 'btn'; btn.textContent = '▶ desenhar de novo';
+  const cap = document.createElement('div'); cap.className = 'cap'; cap.textContent = 'velocidade de quem está aprendendo';
+  animBox.appendChild(document.createElement('br')); animBox.appendChild(btn); animBox.appendChild(cap);
+
+  function animar(){
+    let delay = 300;
+    animPaths.forEach(p => {
+      const len = p.getTotalLength();
+      p.style.transition = 'none';
+      p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
+      p.getBoundingClientRect();
+      const dur = Math.max(len*14, 500);
+      setTimeout(() => { p.style.transition = 'stroke-dashoffset '+dur+'ms linear'; p.style.strokeDashoffset = 0; }, delay);
+      delay += dur + 350;
+    });
+  }
+  btn.addEventListener('click', animar);
+  animadores.push(animar);
+
+  /* ---- passos ---- */
+  const passos = document.createElement('div'); passos.className = 'passos';
+  const row = document.createElement('div'); row.className = 'passos-row';
+  strokes.forEach((d, k) => {
+    const box = document.createElement('div'); box.className = 'passo';
+    const s = baseSvg();
+    strokes.forEach((d2, j) => {
+      if (j < k) s.appendChild(pathEl(d2, {stroke:"#26241F","stroke-width":6}));
+      else if (j > k) s.appendChild(pathEl(d2, {stroke:"#26241F","stroke-width":6, opacity:0.08}));
+    });
+    const guia = pathEl(d, {stroke:"#2F7D5B","stroke-width":5,"stroke-dasharray":"7 5","marker-end":"url(#arrw)"});
+    s.appendChild(guia);
+    box.appendChild(s);
+    const lbl = document.createElement('div'); lbl.className = 'lbl'; lbl.textContent = 'traço '+(k+1);
+    box.appendChild(lbl);
+    row.appendChild(box);
+    requestAnimationFrame(() => {
+      const p0 = guia.getPointAtLength(0);
+      s.appendChild(svgEl('circle', {cx:p0.x, cy:p0.y, r:5, fill:"#C63D2F"}));
+    });
+  });
+  passos.appendChild(row);
+  const ol = document.createElement('div'); ol.className = 'instr';
+  ol.innerHTML = INSTR[ch].map((t,i) => '<div style="margin:6px 0"><span class="n">'+(i+1)+'</span>'+t+'</div>').join('');
+  passos.appendChild(ol);
+
+  zona.appendChild(animBox); zona.appendChild(passos);
+  sec.appendChild(zona);
+
+  /* ---- quadro do dedo ---- */
+  const padArea = document.createElement('div'); padArea.className = 'pad-area';
+  padArea.innerHTML = '<div class="pad-t">🖐️ Agora você: cubra o tracejado com o dedo (bolinha = começo)</div>';
+  const pad = document.createElement('div'); pad.className = 'pad';
+  const gsvg = baseSvg();
+  strokes.forEach(d => {
+    const g = pathEl(d, {stroke:"#B9B2A2","stroke-width":5,"stroke-dasharray":"6 6"});
+    gsvg.appendChild(g);
+    requestAnimationFrame(() => {
+      const p0 = g.getPointAtLength(0);
+      gsvg.appendChild(svgEl('circle', {cx:p0.x, cy:p0.y, r:4.5, fill:"#C63D2F"}));
+    });
+  });
+  const cv = document.createElement('canvas');
+  pad.appendChild(gsvg); pad.appendChild(cv);
+  padArea.appendChild(pad);
+  const btns = document.createElement('div'); btns.className = 'pad-btns';
+  const limpar = document.createElement('button'); limpar.className = 'btn'; limpar.textContent = '🧽 limpar';
+  btns.appendChild(limpar); padArea.appendChild(btns);
+  sec.appendChild(padArea);
+  cont.appendChild(sec);
+
+  function setupCanvas(){
+    const r = pad.getBoundingClientRect(); const dpr = window.devicePixelRatio || 1;
+    cv.width = r.width*dpr; cv.height = r.height*dpr;
+    const ctx = cv.getContext('2d'); ctx.scale(dpr, dpr);
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = 10; ctx.strokeStyle = 'rgba(47,125,91,.85)';
+    return ctx;
+  }
+  let ctx = null, desenhando = false;
+  requestAnimationFrame(() => { ctx = setupCanvas(); });
+  function pos(ev){ const r = cv.getBoundingClientRect(); return [ev.clientX-r.left, ev.clientY-r.top]; }
+  pad.addEventListener('pointerdown', ev => { if(!ctx) ctx = setupCanvas(); desenhando = true; const [x,y] = pos(ev); ctx.beginPath(); ctx.moveTo(x,y); ev.preventDefault(); });
+  pad.addEventListener('pointermove', ev => { if(!desenhando) return; const [x,y] = pos(ev); ctx.lineTo(x,y); ctx.stroke(); ev.preventDefault(); });
+  window.addEventListener('pointerup', () => desenhando = false);
+  limpar.addEventListener('click', () => { const r = pad.getBoundingClientRect(); ctx.clearRect(0,0,r.width,r.height); });
+});
+
+window.addEventListener('load', () => { animadores.forEach((a,i) => setTimeout(a, i*400)); });
+</script>
+</body>
+</html>

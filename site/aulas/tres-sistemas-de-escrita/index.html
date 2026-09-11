@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Japonês do zero · Etapa 0 — Os três sistemas de escrita</title>
+<style>
+  :root{
+    --paper:#FAF7F0; --ink:#26241F; --soft:#6B6557; --indigo:#2E4272;
+    --hira:#2F7D5B; --hira-bg:#E4F2EA; --kata:#B24A6C; --kata-bg:#F7E6EC;
+    --kanji:#A8690F; --kanji-bg:#F6EBD7; --hanko:#C63D2F; --line:#E4DED2;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--paper); color:var(--ink);
+    font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;
+    line-height:1.65; font-size:16px;}
+  .wrap{max-width:720px; margin:0 auto; padding:36px 20px 80px;}
+  h1,h2{font-family:Iowan Old Style,Georgia,"Times New Roman",serif; line-height:1.25; font-weight:700;}
+  h1{font-size:clamp(26px,5vw,34px); margin-bottom:8px;}
+  h2{font-size:clamp(20px,4vw,24px); margin:52px 0 14px; padding-top:20px; border-top:1px solid var(--line);}
+  p{margin-bottom:14px; max-width:62ch;}
+  .lede{font-size:18px; color:var(--soft);}
+  .stamp{display:inline-block; border:2px solid var(--hanko); color:var(--hanko);
+    border-radius:8px; padding:2px 10px; font-size:13px; font-weight:600; margin-bottom:14px;}
+
+  /* ---------- frase brasileira ---------- */
+  .br-frase{background:#fff; border:1px solid var(--line); border-radius:14px;
+    padding:18px 16px; font-size:clamp(18px,4.4vw,24px); text-align:center;
+    font-family:Georgia,serif; margin:16px 0 6px;}
+  .chip{border-radius:8px; padding:2px 6px;}
+  .c-hira{background:var(--hira-bg); box-shadow:inset 0 -3px 0 var(--hira);}
+  .c-kata{background:var(--kata-bg); box-shadow:inset 0 -3px 0 var(--kata);}
+  .c-kanji{background:var(--kanji-bg); box-shadow:inset 0 -3px 0 var(--kanji);}
+  .cap{font-size:13.5px; color:var(--soft); text-align:center; margin-bottom:0;}
+
+  /* ---------- decodificador ---------- */
+  .decoder{background:#fff; border:1px solid var(--line); border-radius:16px; padding:22px 16px; margin-top:16px;}
+  .jp-sent{text-align:center; font-size:clamp(30px,8vw,44px); letter-spacing:3px;
+    font-family:"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif; user-select:none;}
+  .jp-sent span{border-radius:10px; padding:4px 6px; cursor:pointer; transition:transform .15s, box-shadow .15s; display:inline-block;}
+  .jp-sent span:hover{transform:translateY(-3px);}
+  .jp-sent .sel{box-shadow:0 0 0 3px var(--indigo);}
+  .romaji{text-align:center; color:var(--soft); font-size:14px; margin-top:8px;}
+  .reveal{margin-top:16px; border-radius:12px; padding:14px 16px; font-size:15px;
+    border:1px dashed var(--line); background:var(--paper); min-height:64px;}
+  .reveal b{font-size:16px;}
+  .toque{ text-align:center; font-size:13px; color:var(--indigo); font-weight:600; margin-top:14px;}
+
+  /* ---------- cards dos sistemas ---------- */
+  .sys{border-radius:16px; padding:18px; margin:14px 0; border:1px solid var(--line); background:#fff;
+    border-left:6px solid; cursor:pointer;}
+  .sys-hira{border-left-color:var(--hira);}
+  .sys-kata{border-left-color:var(--kata);}
+  .sys-kanji{border-left-color:var(--kanji);}
+  .sys-head{display:flex; align-items:center; gap:14px;}
+  .glifo{font-size:40px; font-family:"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif; line-height:1;}
+  .sys-hira .glifo{color:var(--hira);} .sys-kata .glifo{color:var(--kata);} .sys-kanji .glifo{color:var(--kanji);}
+  .sys-title{font-weight:700; font-size:17px;}
+  .sys-sub{font-size:13.5px; color:var(--soft);}
+  .sys-more{display:none; margin-top:12px; font-size:15px; border-top:1px solid var(--line); padding-top:12px;}
+  .sys.open .sys-more{display:block;}
+  .abrir{margin-left:auto; font-size:12.5px; color:var(--indigo); font-weight:600; white-space:nowrap;}
+  .ex{background:var(--paper); border-radius:10px; padding:10px 12px; margin-top:10px; font-size:15px;}
+  .jp{font-family:"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;}
+
+  /* ---------- comparação visual ---------- */
+  .formas{display:flex; gap:10px; margin:16px 0; flex-wrap:wrap;}
+  .forma{flex:1; min-width:170px; text-align:center; background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px 8px;}
+  .forma .jp{font-size:34px; display:block; margin-bottom:6px;}
+  .forma small{color:var(--soft); font-size:12.5px; display:block; line-height:1.4;}
+
+  /* ---------- esquema de estudo ---------- */
+  .rota{position:relative; margin-top:18px; padding-left:26px;}
+  .rota::before{content:""; position:absolute; left:8px; top:6px; bottom:6px; width:2px; background:var(--line);}
+  .passo{position:relative; margin-bottom:18px; background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px 16px;}
+  .passo::before{content:""; position:absolute; left:-24px; top:20px; width:14px; height:14px; border-radius:50%;
+    background:var(--indigo); border:3px solid var(--paper);}
+  .passo.feito::before{background:var(--hira);}
+  .passo .quando{font-size:12.5px; color:var(--soft);}
+  .passo .p-t{font-weight:700;}
+  .passo .p-d{font-size:14.5px; margin-top:4px;}
+  .tagok{display:inline-block; font-size:11.5px; font-weight:700; color:#fff; background:var(--hira);
+    border-radius:6px; padding:1px 8px; margin-left:6px; vertical-align:middle;}
+
+  /* ---------- teste rápido ---------- */
+  .q{background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px; margin:12px 0;}
+  .q p{font-weight:600; margin-bottom:10px;}
+  .opts{display:flex; gap:8px; flex-wrap:wrap;}
+  .opt{border:1.5px solid var(--line); background:var(--paper); border-radius:10px; padding:8px 14px;
+    cursor:pointer; font-size:14.5px; font-family:inherit;}
+  .opt.certo{border-color:var(--hira); background:var(--hira-bg);}
+  .opt.errado{border-color:var(--hanko); background:#FBE9E6;}
+  .fb{font-size:14px; margin-top:10px; display:none;}
+  footer{margin-top:56px; font-size:13px; color:var(--soft); border-top:1px solid var(--line); padding-top:16px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="stamp">Etapa 0 · Panorama</span>
+  <h1>Por que o japonês tem <em>três</em> jeitos de escrever?</h1>
+  <p class="lede">O português usa um único alfabeto para tudo. O japonês mistura três sistemas de símbolos — na mesma frase, o tempo todo. Nesta página você vai entender o papel de cada um, sem precisar saber ler nada ainda.</p>
+
+  <h2>1 · Você já faz isso em português (sem perceber)</h2>
+  <p>Olha esta frase comum, escrita por qualquer brasileiro:</p>
+  <div class="br-frase">
+    <span class="chip c-hira">Eu comprei</span> <span class="chip c-kanji">2</span> <span class="chip c-kata">hambúrgueres</span><span class="chip c-hira">.</span>
+  </div>
+  <p class="cap">Uma frase, três tipos de símbolo — igualzinho ao japonês.</p>
+  <p style="margin-top:14px;"><span class="chip c-hira">Verde</span> são letras: símbolos que representam <strong>sons</strong>. <span class="chip c-kanji">Amarelo</span> é o número 2: um símbolo que representa uma <strong>ideia</strong> — "dois" se entende em qualquer língua, mesmo que cada uma pronuncie diferente. <span class="chip c-kata">Rosa</span> é uma palavra <strong>estrangeira</strong> adaptada (do inglês <em>hamburger</em>). O japonês faz exatamente essa divisão, só que com três conjuntos de caracteres separados.</p>
+
+  <h2>2 · A mesma frase, em japonês</h2>
+  <p>"Eu como pizza." Toque em cada pedaço colorido para descobrir qual sistema ele usa:</p>
+  <div class="decoder">
+    <div class="jp-sent">
+      <span class="c-kanji" data-k="kanji" data-t="私 = &quot;eu&quot;" data-d="KANJI — um símbolo de significado. 私 quer dizer &quot;eu&quot;. Lê-se &quot;watashi&quot;.">私</span><span class="c-hira" data-k="hira" data-t="は = partícula" data-d="HIRAGANA — engrenagem da gramática. Esta partícula marca quem é o assunto da frase.">は</span><span class="c-kata" data-k="kata" data-t="ピザ = pizza" data-d="KATAKANA — palavra estrangeira! &quot;Pizza&quot; virou ピザ (piza). Repare nos traços retos e angulosos.">ピザ</span><span class="c-hira" data-k="hira" data-t="を = partícula" data-d="HIRAGANA — outra engrenagem gramatical. Esta partícula marca o objeto (a coisa que sofre a ação).">を</span><span class="c-kanji" data-k="kanji" data-t="食 = &quot;comer&quot;" data-d="KANJI — símbolo de significado. 食 carrega a ideia de &quot;comer / comida&quot;.">食</span><span class="c-hira" data-k="hira" data-t="べます = terminação" data-d="HIRAGANA — a terminação do verbo, que indica tempo e polidez (como o &quot;-o&quot; de &quot;como&quot; ou o &quot;-ei&quot; de &quot;comi&quot;).">べます</span>
+    </div>
+    <div class="romaji">watashi · wa · piza · o · tabemasu</div>
+    <div class="reveal" id="reveal">👆 <b>Toque em um pedaço da frase</b> para ver o que ele é.</div>
+  </div>
+
+  <h2>3 · Os três sistemas, um por um</h2>
+  <p>Toque em cada cartão para abrir os detalhes:</p>
+
+  <div class="sys sys-hira" onclick="this.classList.toggle('open')">
+    <div class="sys-head">
+      <div class="glifo">あ</div>
+      <div><div class="sys-title">Hiragana · ひらがな</div><div class="sys-sub">Símbolos de SOM · traços arredondados · é por ele que se começa</div></div>
+      <div class="abrir">abrir ↓</div>
+    </div>
+    <div class="sys-more">
+      <p>Funciona como o nosso alfabeto: cada símbolo representa um som, e o símbolo sozinho não significa nada — assim como a letra "b" não significa nada até formar "bola". São 46 símbolos básicos.</p>
+      <p>Ele escreve as palavras japonesas nativas, as partículas (as "pecinhas" da gramática) e as terminações dos verbos. Sabendo hiragana, você já lê e escreve japonês de verdade.</p>
+      <div class="ex"><span class="jp">ね (ne) + こ (ko) = ねこ</span> → "neko" = gato 🐈</div>
+    </div>
+  </div>
+
+  <div class="sys sys-kata" onclick="this.classList.toggle('open')">
+    <div class="sys-head">
+      <div class="glifo">ア</div>
+      <div><div class="sys-title">Katakana · カタカナ</div><div class="sys-sub">Símbolos de SOM · traços retos · para palavras "de fora"</div></div>
+      <div class="abrir">abrir ↓</div>
+    </div>
+    <div class="sys-more">
+      <p>Representa exatamente os <em>mesmos 46 sons</em> do hiragana, só que desenhados de outro jeito — é como MAIÚSCULA e minúscula: "A" e "a" são a mesma letra com duas formas.</p>
+      <p>É usado para palavras de origem estrangeira, nomes estrangeiros (o seu, inclusive!) e onomatopeias. Serve como um "destaque", tipo escrever em <em>itálico</em>.</p>
+      <div class="ex"><span class="jp">コーヒー</span> (kōhī) = café, do inglês <em>coffee</em> ☕</div>
+    </div>
+  </div>
+
+  <div class="sys sys-kanji" onclick="this.classList.toggle('open')">
+    <div class="sys-head">
+      <div class="glifo">漢</div>
+      <div><div class="sys-title">Kanji · 漢字</div><div class="sys-sub">Símbolos de SIGNIFICADO · vieram do chinês · ficam para depois</div></div>
+      <div class="abrir">abrir ↓</div>
+    </div>
+    <div class="sys-more">
+      <p>Aqui muda a lógica: cada kanji carrega uma <strong>ideia</strong>, não só um som. Pense no número "3": você olha e entende "três" na hora, mesmo que em cada língua se pronuncie diferente (três, three, tres). O kanji funciona assim.</p>
+      <p>Existem milhares (cerca de 2.000 de uso cotidiano), por isso são aprendidos aos poucos, ao longo de anos — e só depois do hiragana e do katakana.</p>
+      <div class="ex"><span class="jp">山</span> = montanha ⛰️ · <span class="jp">川</span> = rio · <span class="jp">日</span> = sol/dia</div>
+    </div>
+  </div>
+
+  <h2>4 · Como distinguir só de olhar</h2>
+  <p>Mesmo som "ka", três desenhos. O formato entrega quem é quem:</p>
+  <div class="formas">
+    <div class="forma"><span class="jp" style="color:var(--hira)">か</span><small><b>Hiragana</b><br>curvinhas, fluido,<br>parece cursiva</small></div>
+    <div class="forma"><span class="jp" style="color:var(--kata)">カ</span><small><b>Katakana</b><br>reto, anguloso,<br>parece "recortado"</small></div>
+    <div class="forma"><span class="jp" style="color:var(--kanji)">課</span><small><b>Kanji</b><br>denso, muitos traços,<br>parece um "desenho"</small></div>
+  </div>
+
+  <h2>5 · Seu esquema de estudo</h2>
+  <p>O caminho completo para pegar a matéria das aulas, em ordem. Sugestão de ritmo: 15–20 min por dia, 4–5 dias por semana, sempre revendo o bloco anterior antes de avançar.</p>
+  <div class="rota">
+    <div class="passo feito">
+      <div class="quando">Aula #1 · você está aqui, terminando agora <span class="tagok">✓ quase lá</span></div>
+      <div class="p-t">Etapa 0 — Panorama da escrita</div>
+      <div class="p-d">Entender o papel do hiragana, do katakana e do kanji. É exatamente esta página.</div>
+    </div>
+    <div class="passo feito">
+      <div class="quando">Aula #1 · 1 dia <span class="tagok">✓ você acertou 3/3</span></div>
+      <div class="p-t">Etapa 1 — O ritmo (mora)</div>
+      <div class="p-d">Cada "batida" de som dura o mesmo tempo: さ・く・ら = sa-ku-ra, 3 batidas iguais.</div>
+    </div>
+    <div class="passo">
+      <div class="quando">Aulas #1 e #2 + folha de traçado · 1 a 2 semanas</div>
+      <div class="p-t">Etapa 2 — Hiragana básico: os 46 sons</div>
+      <div class="p-d">De 5 em 5, por linhas: あいうえお → か → さ → た → な → は → ま → や → ら → わ・を・ん. Ler E escrever cada bloco.</div>
+    </div>
+    <div class="passo">
+      <div class="quando">Aula #2 · 3 a 5 dias</div>
+      <div class="p-t">Etapa 3 — Modificadores de sons</div>
+      <div class="p-d">Os sinaizinhos que mudam o som: ゛ (か→が), ゜ (は→ぱ), vogais longas, dígrafos (きゃ) e a pausinha っ.</div>
+    </div>
+    <div class="passo">
+      <div class="quando">fechamento · 2 a 3 dias</div>
+      <div class="p-t">Etapa 4 — Juntar tudo</div>
+      <div class="p-d">Ler palavras reais e se apresentar: はじめまして, Watashi wa ___ desu, よろしくおねがいします.</div>
+    </div>
+  </div>
+
+  <h2>6 · Teste você mesmo</h2>
+  <p>Sem pressão — errar aqui é parte do treino. Toque na resposta:</p>
+
+  <div class="q">
+    <p>1. A palavra "pizza" veio do italiano. Em japonês, ela se escreve com…</p>
+    <div class="opts">
+      <button class="opt" data-ok="0">Hiragana</button>
+      <button class="opt" data-ok="1">Katakana</button>
+      <button class="opt" data-ok="0">Kanji</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="q">
+    <p>2. O símbolo 川 significa "rio" — ele carrega uma ideia, não só um som. Ele é um…</p>
+    <div class="opts">
+      <button class="opt" data-ok="0">Hiragana</button>
+      <button class="opt" data-ok="0">Katakana</button>
+      <button class="opt" data-ok="1">Kanji</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="q">
+    <p>3. A partícula は, uma "pecinha" da gramática japonesa, se escreve com…</p>
+    <div class="opts">
+      <button class="opt" data-ok="1">Hiragana</button>
+      <button class="opt" data-ok="0">Katakana</button>
+      <button class="opt" data-ok="0">Kanji</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <footer>Japonês do zero · Etapa 0 · material de apoio criado a partir das suas aulas #1 (26/08) e #2 (02/09) — turma にほんご５.</footer>
+</div>
+
+<script>
+  // decodificador da frase
+  const reveal = document.getElementById('reveal');
+  document.querySelectorAll('.jp-sent span').forEach(s => {
+    s.addEventListener('click', () => {
+      document.querySelectorAll('.jp-sent span').forEach(x => x.classList.remove('sel'));
+      s.classList.add('sel');
+      reveal.innerHTML = '<b>' + s.dataset.t + '</b><br>' + s.dataset.d;
+    });
+  });
+  // quiz
+  document.querySelectorAll('.q').forEach(q => {
+    const fb = q.querySelector('.fb');
+    q.querySelectorAll('.opt').forEach(o => {
+      o.addEventListener('click', () => {
+        q.querySelectorAll('.opt').forEach(x => x.classList.remove('certo','errado'));
+        if (o.dataset.ok === '1') {
+          o.classList.add('certo');
+          fb.style.display = 'block';
+          fb.innerHTML = '✅ Isso! Você pegou a lógica.';
+        } else {
+          o.classList.add('errado');
+          fb.style.display = 'block';
+          fb.innerHTML = '🤏 Quase — pensa: é som, ideia, ou palavra estrangeira? Tenta de novo.';
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>
