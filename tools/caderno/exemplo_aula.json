@@ -1,0 +1,31 @@
+{
+  "titulo": "Escrevendo さ・し・す・せ・そ traço a traço",
+  "stamp": "Etapa 2 · Bloco 3 · Caderno de escrita",
+  "intro": "<p>Igual caderno de alfabetização: a <b style=\"color:var(--hanko)\">bolinha vermelha</b> é onde a caneta <b>encosta</b> no papel, a <b style=\"color:var(--hira)\">linha verde tracejada</b> é o caminho que ela percorre, e a setinha mostra para onde ela vai. Um traço de cada vez.</p>",
+  "letras": [
+    {"ch": "さ", "romaji": "sa", "som": "soa como o SA de sala",
+     "instr": ["Uma linha deitada, curtinha, inclinada de leve para cima.",
+               "Desce cortando a linha, do alto até quase o fim.",
+               "Embaixo, entra pela esquerda e faz uma curva grande que sobe para a direita — parece um sorriso."]},
+    {"ch": "し", "romaji": "shi", "som": "soa como o XI de xícara (um traço só!)",
+     "instr": ["Desce reto e, lá embaixo, faz a curva para a direita subindo, como um anzol."]},
+    {"ch": "す", "romaji": "su", "som": "soa como o SU de suco (sem biquinho)",
+     "instr": ["Uma linha deitada, curta.",
+               "Desce cortando a linha, faz um laçinho pequeno e termina puxando para a esquerda."]},
+    {"ch": "せ", "romaji": "se", "som": "soa como o SÉ de sete",
+     "instr": ["Uma linha deitada, mais comprida.",
+               "Do lado direito, um tracinho curto que desce e vira um pouquinho para a esquerda.",
+               "Da esquerda, desce e faz a base virando para a direita."]},
+    {"ch": "そ", "romaji": "so", "som": "soa como o SÓ de sol (um traço só!)",
+     "instr": ["Começa em cima, faz um zigue-zague para a esquerda e desce fazendo uma barriga grande que termina à direita."]}
+  ],
+  "palavras": [
+    {"jp": "さけ", "romaji": "sake", "pt": "saquê"},
+    {"jp": "すし", "romaji": "sushi", "pt": "sushi"},
+    {"jp": "せかい", "romaji": "sekai", "pt": "mundo"},
+    {"jp": "そこ", "romaji": "soko", "pt": "aí"},
+    {"jp": "あさ", "romaji": "asa", "pt": "manhã"},
+    {"jp": "いす", "romaji": "isu", "pt": "cadeira"}
+  ],
+  "dica": "Repare: し e そ têm um traço só — são as mais rápidas de escrever, mas as curvas pedem calma."
+}

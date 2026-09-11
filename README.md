@@ -10,12 +10,30 @@ Site estatico. Sem build, sem backend, sem dependencia de CDN: o que esta em
 
 ## A divisao de trabalho
 
-Voce gera o HTML da aula por fora, do jeito que preferir. O repositorio nao tem
-opiniao sobre como a aula virou HTML — so sobre o que o arquivo precisa ter
-quando chega, e esse minimo e uma linha. Esta em
+O HTML da aula nasce por fora; o repositorio so cuida de onde ele mora e de
+como aparece no hub. O minimo que um arquivo precisa ter e uma linha, e esta em
 [`docs/CONTRATO-AULA.md`](docs/CONTRATO-AULA.md).
 
-## Subir uma aula
+Para o caderno de escrita — a aula com tracado animado, quadro para escrever com
+o dedo e botao de ouvir — quem gera o HTML e
+[`tools/caderno/`](tools/caderno/README.md), aqui dentro.
+
+## O fluxo, de ponta a ponta
+
+```bash
+# 1. gerar: JSON da aula -> HTML (tracados vem do cache em tools/caderno/kanjivg/)
+python tools/caderno/gerar_aula.py aula.json hiragana-linha-sa.html
+
+# 2. registrar: copia para site/aulas/<slug>/ e escreve no indice do hub
+python scripts/nova_aula.py --de hiragana-linha-sa.html --slug hiragana-linha-sa \
+    --tags bloco-3,hiragana,tracado --data 2026-09-11 --resumo "uma linha para o cartao"
+
+# 3. publicar: push na main dispara o workflow, a pagina entra no ar
+git add -A && git commit -m "aula: hiragana-linha-sa" && git push
+```
+
+O passo 1 vale para o caderno de escrita. Uma aula que voce escreveu a mao, ou
+gerou de outro jeito, pula direto para o passo 2:
 
 ```bash
 python scripts/nova_aula.py --de caminho/da/aula.html --tags hiragana,escrita
@@ -80,6 +98,13 @@ site/                        publicado como esta, sem build
     brand/favicon.svg
   data/aulas.json            indice da listagem
 scripts/nova_aula.py         importa a aula e escreve no indice
+tools/caderno/               gerador do caderno de escrita (JSON -> HTML)
+  gerar_aula.py              o comando que gera a pagina da aula
+  kanjivg.py                 tracados oficiais, com cache offline
+  kanjivg/                   o cache: um .json por caractere, versionado
+  template_aula.html         a pagina em si (CSS + JS + marcadores)
+  exemplo_aula.json          modelo do JSON de entrada
+  formato.md                 o formato visual descrito
 docs/                        architecture.md e CONTRATO-AULA.md
 .cursor/rules/aulas.mdc      convencoes, lidas pelo editor de IA
 .github/workflows/pages.yml  publica site/ a cada push na main
@@ -87,3 +112,6 @@ ingest/                      git-ignored, material bruto da aula
 ```
 
 Como funciona por baixo: [`docs/architecture.md`](docs/architecture.md).
+O gerador do caderno: [`tools/caderno/README.md`](tools/caderno/README.md).
+
+Tracados das letras: base **KanjiVG** (c) Ulrich Apel, licenca CC BY-SA 3.0.
