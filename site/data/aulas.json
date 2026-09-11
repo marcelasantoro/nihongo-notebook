@@ -2,6 +2,17 @@
   "formato": "nihongo-notebook/aulas@1",
   "aulas": [
     {
+      "slug": "hiragana-linha-sa",
+      "titulo": "Bloco 3 · A linha さ — sa shi su se so",
+      "data": "2026-09-11",
+      "resumo": "A linha さ: sa shi su se so, traco a traco",
+      "tags": [
+        "bloco-3",
+        "hiragana",
+        "tracado"
+      ]
+    },
+    {
       "slug": "tres-sistemas-de-escrita",
       "titulo": "Japonês do zero · Etapa 0 — Os três sistemas de escrita",
       "data": "2026-09-10",
