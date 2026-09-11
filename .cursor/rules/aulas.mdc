@@ -24,7 +24,10 @@ nao preencha.
 - `site/aulas/<slug>/index.html` — uma pasta por aula, `<slug>` em kebab-case sem
   acento. O arquivo e da Marcela: nao reformate, nao reescreva, nao "melhore".
 - `site/data/aulas.json` — o indice da listagem. Quem escreve e
-  `scripts/nova_aula.py`.
+  `scripts/nova_aula.py`. **A ordem do hub sai da tag de sequencia** (`etapa-0`,
+  `bloco-1`, `bloco-2`...), em ordem crescente, e nao da `data`. Toda aula do
+  curso leva uma tag `bloco-N`; sem ela a aula vai para o fim da lista, o que so
+  esta certo para pagina de referencia.
 - `site/assets/js/pronuncia.js` — o botao de ouvir, compartilhado.
 - `site/assets/css/aula.css` — folha **opcional**. Nenhuma aula e obrigada a usar.
 - `site/assets/audio/` — MP3 de pronuncia e o `audio.json` que mapeia texto para

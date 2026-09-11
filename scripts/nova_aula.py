@@ -134,8 +134,32 @@ def carregar_indice():
     return dados
 
 
+SEQUENCIA = re.compile(r"(etapa|bloco)-(\d+)")
+PESO_TIPO = {"etapa": 0, "bloco": 1}
+
+
+def chave_de_ordem(aula):
+    """Posicao da aula no curso, tirada da tag de sequencia.
+
+    O caderno e um curso, entao a lista segue `etapa-0`, `bloco-1`, `bloco-2`...
+    e nao a data: uma aula refeita hoje nao pode pular na frente do bloco
+    anterior. Aula sem tag de sequencia cai no fim, ordenada por data. E a mesma
+    regra do compararAulas() em site/index.html; mudou aqui, mude la.
+    """
+    melhor = None
+    for tag in aula.get("tags") or []:
+        achado = SEQUENCIA.fullmatch(str(tag).strip().lower())
+        if not achado:
+            continue
+        par = (int(achado.group(2)), PESO_TIPO[achado.group(1)])
+        if melhor is None or par < melhor:
+            melhor = par
+    numero, tipo = melhor if melhor else (0, 0)
+    return (0 if melhor else 1, numero, tipo, aula.get("data") or "", aula.get("slug") or "")
+
+
 def salvar_indice(dados):
-    dados["aulas"].sort(key=lambda a: (a.get("data") or "", a.get("slug") or ""), reverse=True)
+    dados["aulas"].sort(key=chave_de_ordem)
     INDICE.parent.mkdir(parents=True, exist_ok=True)
     INDICE.write_text(
         json.dumps(dados, ensure_ascii=False, indent=2) + "\n",

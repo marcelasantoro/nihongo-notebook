@@ -103,6 +103,38 @@ const caixaTags = document.getElementById('tags');
 let aulas = [];
 let tagAtiva = null;
 
+/* O caderno e um curso, entao a lista segue a sequencia das aulas e nao a data
+ * de publicacao: uma aula refeita hoje nao pode pular para o topo. O numero sai
+ * da tag de sequencia (`etapa-0`, `bloco-1`, `bloco-2`...), que e o unico lugar
+ * onde a posicao ja estava escrita. Aula sem essa tag vai para o fim, por data.
+ * Precisa ser a mesma regra do salvar_indice() em scripts/nova_aula.py. */
+const SEQUENCIA = /^(etapa|bloco)-(\d+)$/;
+const PESO_TIPO = {etapa: 0, bloco: 1};
+
+function posicao(a) {
+  let melhor = null;
+  (a.tags || []).forEach(function (tag) {
+    const achado = SEQUENCIA.exec(String(tag).trim().toLowerCase());
+    if (!achado) return;
+    const par = [Number(achado[2]), PESO_TIPO[achado[1]]];
+    if (!melhor || par[0] < melhor[0] || (par[0] === melhor[0] && par[1] < melhor[1])) {
+      melhor = par;
+    }
+  });
+  // Sem numero: [1, ...] joga para depois de todas as numeradas, que usam [0, ...].
+  return melhor ? [0, melhor[0], melhor[1]] : [1, 0, 0];
+}
+
+function compararAulas(a, b) {
+  const pa = posicao(a).concat([String(a.data || ''), String(a.titulo || a.slug || '')]);
+  const pb = posicao(b).concat([String(b.data || ''), String(b.titulo || b.slug || '')]);
+  for (let i = 0; i < pa.length; i++) {
+    if (pa[i] < pb[i]) return -1;
+    if (pa[i] > pb[i]) return 1;
+  }
+  return 0;
+}
+
 function vazio(html) {
   lista.innerHTML = '<li class="vazio">' + html + '</li>';
 }
@@ -195,9 +227,7 @@ fetch('data/aulas.json')
     return r.json();
   })
   .then(function (dados) {
-    aulas = (dados.aulas || []).slice().sort(function (a, b) {
-      return String(b.data || '').localeCompare(String(a.data || ''));
-    });
+    aulas = (dados.aulas || []).slice().sort(compararAulas);
     if (!aulas.length) {
       vazio('<p><b>Nenhuma aula ainda.</b></p>' +
             '<p>Gere o HTML da aula do jeito que preferir e traga ele para cá:</p>' +

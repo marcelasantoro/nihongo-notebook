@@ -95,12 +95,18 @@ python scripts/nova_aula.py --de aula.html --tags hiragana,escrita \
 Editar o JSON na mao tambem funciona. Campos: `slug`, `titulo`, `data`
 (AAAA-MM-DD), `resumo`, `tags`.
 
-**A `data` e o que ordena o hub**, do mais novo para o mais antigo. Se voce nao
-passar `--data`, entra a data de hoje, que e o dia em que a aula chegou ao
-caderno e nao o dia da aula. Para o caderno ficar na ordem do curso, corrija.
+**A tag de sequencia e o que ordena o hub**, em ordem crescente: `etapa-0`,
+`bloco-1`, `bloco-2`, `bloco-3`... O caderno e um curso, entao a posicao da aula
+e a posicao dela na materia, e nao a data em que o arquivo entrou no repositorio
+— refazer o bloco 2 hoje nao joga ele na frente do bloco 3. Uma aula sem tag de
+sequencia (uma pagina de referencia, por exemplo) cai no fim da lista.
 
-As `tags` viram os filtros no topo do hub, entao vale manter um vocabulario
-pequeno e repetido (`hiragana`, `katakana`, `kanji`, `gramatica`, `bloco-1`...).
+A `data` aparece no cartao e so desempata aulas sem numero, entao nao precisa
+mais ser corrigida para acertar a ordem do curso: o numero do bloco faz isso.
+
+As `tags` tambem viram os filtros no topo do hub, entao vale manter um
+vocabulario pequeno e repetido (`hiragana`, `katakana`, `kanji`, `gramatica`,
+`bloco-1`...).
 
 ## Estilo (opcional)
 
