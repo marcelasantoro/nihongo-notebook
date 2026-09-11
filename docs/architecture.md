@@ -104,9 +104,15 @@ saidas possiveis (um JSON mantido por script ou gerar o hub inteiro num build), 
 primeira mantem a promessa de nao ter build. O hub so le; quem escreve e o script
 Python, para a listagem ficar versionada no git.
 
-**A ordem do hub sai do campo `data`.** Aula sem data real cai no dia em que
-entrou no caderno, o que ordena errado. Corrigir a `data` em `aulas.json` e o
-jeito de por o curso na ordem certa.
+**A ordem do hub sai do numero do bloco, nao da data.** A data ordenava errado:
+ela diz quando o arquivo entrou no repositorio, e uma aula antiga refeita hoje
+subia na frente das seguintes. O numero ja estava escrito na tag de sequencia
+(`etapa-0`, `bloco-1`, `bloco-2`...), entao e dela que a posicao sai, em ordem
+crescente; aula sem tag de sequencia vai para o fim, e ai sim por data. A regra
+existe em dois lugares — `compararAulas()` no `index.html`, que ordena o que le,
+e `chave_de_ordem()` no `nova_aula.py`, que ordena o que grava — porque o hub
+nao pode depender do JSON ja estar na ordem certa nem o JSON ficar embaralhado
+no git. Mexeu em uma, mexa na outra.
 
 **Nada de CDN.** Nem fonte, nem biblioteca. A pagina abre offline depois do
 primeiro carregamento e nao depende de terceiro estar no ar. E a mesma razao pela
