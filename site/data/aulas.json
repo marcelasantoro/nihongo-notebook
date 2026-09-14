@@ -57,6 +57,61 @@
       ]
     },
     {
+      "slug": "hiragana-linha-ta",
+      "titulo": "Bloco 4 · A linha た — ta chi tsu te to",
+      "data": "2026-09-14",
+      "resumo": "A linha た: ta chi tsu te to, traco a traco",
+      "tags": [
+        "bloco-4",
+        "hiragana",
+        "tracado"
+      ]
+    },
+    {
+      "slug": "hiragana-linha-na",
+      "titulo": "Bloco 5 · A linha な — na ni nu ne no",
+      "data": "2026-09-14",
+      "resumo": "A linha な: na ni nu ne no, traco a traco",
+      "tags": [
+        "bloco-5",
+        "hiragana",
+        "tracado"
+      ]
+    },
+    {
+      "slug": "hiragana-linha-ha",
+      "titulo": "Bloco 6 · A linha は — ha hi fu he ho",
+      "data": "2026-09-14",
+      "resumo": "A linha は: ha hi fu he ho, traco a traco",
+      "tags": [
+        "bloco-6",
+        "hiragana",
+        "tracado"
+      ]
+    },
+    {
+      "slug": "hiragana-linha-ma",
+      "titulo": "Bloco 7 · A linha ま — ma mi mu me mo",
+      "data": "2026-09-14",
+      "resumo": "A linha ま: ma mi mu me mo, traco a traco",
+      "tags": [
+        "bloco-7",
+        "hiragana",
+        "tracado"
+      ]
+    },
+    {
+      "slug": "hiragana-linha-ya",
+      "titulo": "Bloco 8 · A linha や — ya yu yo",
+      "data": "2026-09-14",
+      "resumo": "A linha や: ya yu yo, traco a traco",
+      "tags": [
+        "bloco-8",
+        "hiragana",
+        "tracado"
+      ]
+    },
+    {
       "slug": "exemplo-pronuncia",
       "titulo": "Como funciona o botão de pronúncia",
       "data": "2026-09-10",
