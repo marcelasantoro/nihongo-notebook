@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jogo das palavras · あ・か・さ</title>
+<style>
+  :root{
+    --paper:#FAF7F0; --ink:#26241F; --soft:#6B6557; --indigo:#2E4272;
+    --hira:#2F7D5B; --hira-bg:#E4F2EA; --hanko:#C63D2F; --hanko-bg:#FBE9E6; --line:#E4DED2;
+    --sun:#F6D66B;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--paper); color:var(--ink);
+    font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif; line-height:1.55; font-size:16px;}
+  .jp{font-family:"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;}
+  .wrap{max-width:560px; margin:0 auto; padding:24px 16px 60px;}
+  h1{font-family:Iowan Old Style,Georgia,serif; font-size:clamp(22px,5vw,28px); margin-bottom:4px;}
+  .stamp{display:inline-block; border:2px solid var(--hanko); color:var(--hanko); border-radius:8px;
+    padding:2px 10px; font-size:13px; font-weight:600; margin-bottom:10px;}
+  .sub{color:var(--soft); font-size:14px; margin-bottom:16px;}
+
+  .barra{display:flex; align-items:center; gap:10px; font-size:13px; color:var(--soft); margin:6px 0 14px;}
+  .trilho{flex:1; height:8px; background:#fff; border:1px solid var(--line); border-radius:99px; overflow:hidden;}
+  .trilho i{display:block; height:100%; width:0; background:var(--hira); transition:width .3s;}
+
+  .tipo{font-size:12.5px; font-weight:700; color:var(--indigo); margin-bottom:6px;}
+  .card{background:#fff; border:1px solid var(--line); border-radius:18px; padding:20px 18px;}
+  .pergunta{font-size:18px; font-weight:700; margin-bottom:6px;}
+  .pergunta .g{font-size:52px; color:var(--hira); display:block; line-height:1.2; letter-spacing:.06em;}
+  .opcoes{display:grid; gap:10px; margin-top:14px;}
+  .op{border:2px solid var(--line); background:var(--paper); border-radius:14px; padding:12px 14px;
+    font-size:18px; text-align:left; cursor:pointer; font-family:inherit; color:var(--ink); transition:border-color .15s;}
+  .op.jp{font-size:26px; color:var(--hira);}
+  .op:hover{border-color:var(--indigo);}
+  .op:focus-visible{outline:3px solid var(--indigo); outline-offset:2px;}
+  .op.certa{border-color:var(--hira); background:var(--hira-bg);}
+  .op.errada{border-color:var(--hanko); background:var(--hanko-bg);}
+  .op[disabled]{cursor:default;}
+
+  /* cartão da palavra (a parte importante) */
+  .fig{display:none; margin-top:16px; border-radius:18px; overflow:hidden; border:1px solid var(--line); background:#fff;}
+  .fig.on{display:block; animation:sobe .25s ease-out;}
+  @keyframes sobe{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
+  @media (prefers-reduced-motion:reduce){ .fig.on{animation:none;} }
+  .veredito{padding:10px 16px; font-weight:700; font-size:15px;}
+  .veredito.ok{background:var(--hira-bg); color:var(--hira);}
+  .veredito.nao{background:var(--hanko-bg); color:var(--hanko);}
+  .fig-corpo{display:flex; gap:16px; padding:16px; align-items:center;}
+  .fig-img{flex:0 0 118px; height:118px; border-radius:16px; display:flex; align-items:center; justify-content:center;
+    font-size:72px; line-height:1; background:var(--sun);}
+  .fig-txt{flex:1; min-width:0;}
+  .fig-jp{font-size:44px; color:var(--hira); line-height:1.15; letter-spacing:.04em;}
+  .fig-ro{font-size:13.5px; color:var(--soft); letter-spacing:.05em;}
+  .fig-pt{font-size:20px; font-weight:700; margin:2px 0 8px;}
+  .soma{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:8px;}
+  .soma .l{border:1.5px solid var(--hira); border-radius:10px; padding:2px 8px; text-align:center; background:var(--hira-bg); min-width:40px;}
+  .soma .l b{display:block; font-size:22px; color:var(--hira); line-height:1.15;}
+  .soma .l small{font-size:11px; color:var(--soft);}
+  .soma .mais{color:var(--soft); font-weight:700;}
+  .btn-som{border:1.5px solid var(--hira); color:var(--hira); background:var(--hira-bg); border-radius:999px;
+    padding:4px 12px; font-size:13.5px; font-weight:700; cursor:pointer; font-family:inherit;}
+  .btn-som:active{background:var(--hira); color:#fff;}
+  .fig-nota{padding:0 16px 14px; font-size:13.5px; color:var(--soft);}
+  .prox{display:block; width:100%; margin-top:14px; border:0; background:var(--indigo); color:#fff; border-radius:14px;
+    padding:14px; font-size:17px; font-weight:700; cursor:pointer; font-family:inherit;}
+  .prox:focus-visible{outline:3px solid var(--hanko); outline-offset:2px;}
+  .som-aviso{background:#FFF4E5; border-left:5px solid #E0A030; border-radius:0 12px 12px 0;
+    padding:10px 14px; margin:12px 0; font-size:13.5px; display:none;}
+
+  /* tela inicial / final */
+  .inicio p, .fim p{margin-bottom:10px; max-width:60ch;}
+  .lista-rev{display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:8px; margin:12px 0;}
+  .rev{border:1.5px solid var(--line); border-radius:12px; padding:8px; text-align:center; background:var(--paper);}
+  .rev .e{font-size:30px;}
+  .rev .j{font-size:22px; color:var(--hira); display:block;}
+  .rev .p{font-size:12.5px;}
+  .rev .n{font-size:11px; color:var(--hanko); font-weight:700;}
+  .placar{font-size:30px; font-weight:700; color:var(--hira); margin:6px 0;}
+  footer{margin-top:40px; font-size:12.5px; color:var(--soft); border-top:1px solid var(--line); padding-top:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="stamp">Etapa 2 · Blocos 1–3 · Jogo de fixação</span>
+  <h1>Jogo das palavras: あ・か・さ</h1>
+  <p class="sub">120 perguntas embaralhadas. O que você errar volta mais duas vezes. Em toda resposta aparece o cartão da palavra com a figura, o hiragana e a soma das letras.</p>
+  <div id="som-aviso" class="som-aviso"></div>
+  <div id="tela"></div>
+  <footer>Japonês do zero · turma にほんご５ · Só com as 15 letras já estudadas: あいうえお · かきくけこ · さしすせそ</footer>
+</div>
+
+<script>
+/* ---------- DADOS ---------- */
+const KANA = [
+  {ch:'あ',ro:'a',som:'soa como o A de água',tr:3},{ch:'い',ro:'i',som:'soa como o I de ilha',tr:2},
+  {ch:'う',ro:'u',som:'soa como o U de uva (sem biquinho)',tr:2},{ch:'え',ro:'e',som:'soa como o É de pé',tr:2},
+  {ch:'お',ro:'o',som:'soa como o Ó de sol',tr:3},
+  {ch:'か',ro:'ka',som:'soa como o CA de casa',tr:3},{ch:'き',ro:'ki',som:'soa como o QUI de quilo',tr:4},
+  {ch:'く',ro:'ku',som:'soa como o CU de cume',tr:1},{ch:'け',ro:'ke',som:'soa como o QUÉ de quero',tr:3},
+  {ch:'こ',ro:'ko',som:'soa como o CÓ de coco',tr:2},
+  {ch:'さ',ro:'sa',som:'soa como o SA de sala',tr:3},{ch:'し',ro:'shi',som:'soa como o XI de xícara',tr:1},
+  {ch:'す',ro:'su',som:'soa como o SU de suco',tr:2},{ch:'せ',ro:'se',som:'soa como o SÉ de sete',tr:3},
+  {ch:'そ',ro:'so',som:'soa como o SÓ de sol',tr:1},
+];
+const K = Object.fromEntries(KANA.map(k=>[k.ch,k]));
+const CONFUSO = {'あ':'お','お':'あ','さ':'き','き':'さ','け':'せ','せ':'け','し':'く','く':'し','い':'こ','こ':'い','う':'え','え':'う','す':'そ','そ':'す','か':'さ'};
+
+const PALAVRAS = [
+  ['あい','amor','❤️'],['あお','azul','🟦'],['あか','vermelho','🟥'],['あき','outono','🍂'],['あさ','manhã','🌅'],
+  ['あし','pé / perna','🦶'],['あせ','suor','💦'],['あう','encontrar','🤝'],['あく','abrir','🚪'],
+  ['あかい','vermelho (cor de algo)','🔴'],['あおい','azul (cor de algo)','🔵'],['あさい','raso','🐾'],
+  ['いえ','casa','🏠'],['いか','lula','🦑'],['いき','respiração','😮‍💨'],['いけ','lagoa','🏞️'],['いし','pedra','🪨'],
+  ['いす','cadeira','🪑'],['いく','ir','🚶'],['いう','dizer','💬'],['いいえ','não','❌'],
+  ['うえ','em cima','⬆️'],['うし','vaca','🐄'],['うそ','mentira','🤥'],['うお','peixe','🐟'],['うすい','fino','📄'],
+  ['え','desenho / quadro','🖼️'],['えき','estação de trem','🚉'],
+  ['おか','colina','⛰️'],['おかし','doce','🍬'],['おく','colocar','📥'],['おす','empurrar','👐'],
+  ['おいしい','gostoso','😋'],['おそい','lento / atrasado','🐢'],['おおきい','grande','🐘'],
+  ['か','mosquito','🦟'],['かい','concha','🐚'],['かお','rosto','😊'],['かき','caqui','🟠'],['かさ','guarda-chuva','☂️'],
+  ['かく','escrever','✍️'],['かう','comprar','🛒'],['かえす','devolver','↩️'],
+  ['き','árvore','🌳'],['きく','ouvir','👂'],['きそ','base / alicerce','🧱'],
+  ['くき','caule','🌱'],['くさ','grama','🌿'],['くし','pente','💇'],['くせ','mania / hábito','🔁'],['くうき','ar','💨'],
+  ['けさ','hoje de manhã','☀️'],['けしき','paisagem','🏔️'],
+  ['こい','carpa','🎏'],['こえ','voz','🗣️'],['こし','quadril / cintura','🩳'],['こけ','musgo','🍀'],
+  ['さか','ladeira','🛣️'],['さけ','saquê','🍶'],['さく','florescer','🌸'],
+  ['しお','sal','🧂'],['しか','cervo','🦌'],
+  ['すいか','melancia','🍉'],['すき','gostar','😍'],['すし','sushi','🍣'],['すこし','um pouco','🤏'],
+  ['せかい','mundo','🌍'],['せき','assento','💺'],
+  ['そこ','aí','👉'],
+].map(([jp,pt,e])=>({jp,pt,e,ro:[...jp].map(c=>K[c].ro).join('')}));
+const P = Object.fromEntries(PALAVRAS.map(p=>[p.jp,p]));
+const EXEMPLO = {'あ':'あさ','い':'いす','う':'うし','え':'えき','お':'おかし','か':'かさ','き':'きく','く':'くさ','け':'けしき','こ':'こえ','さ':'さけ','し':'しお','す':'すし','せ':'せかい','そ':'そこ'};
+
+/* ---------- utilidades ---------- */
+const rnd = a => a[Math.floor(Math.random()*a.length)];
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function amostra(a,n){ return shuffle(a).slice(0,n); }
+function distratores(pool, certo, n, chave){ const out=[]; for(const x of shuffle(pool)){ const v=chave?chave(x):x; if(v!==certo && !out.includes(v)) out.push(v); if(out.length===n) break; } return out; }
+function palavraFalsa(jp){ // troca uma letra por uma parecida ou aleatória; nunca retorna palavra real
+  for(let t=0;t<30;t++){ const i=Math.floor(Math.random()*jp.length); const c=jp[i];
+    const nova=[...jp]; nova[i]=(Math.random()<.7 && CONFUSO[c])?CONFUSO[c]:rnd(KANA).ch; const s=nova.join('');
+    if(s!==jp && !P[s]) return s; }
+  return null;
+}
+
+/* ---------- geração das 120 perguntas ---------- */
+function gerar(){
+  const Q=[];
+  const todas = PALAVRAS.slice();
+  // 44 · ler a palavra e achar o significado
+  for(const p of amostra(todas,44)){
+    Q.push({tipo:'Leitura: o que significa?', prompt:`Leia e escolha o significado:`, g:p.jp, jpOp:false,
+      opcoes:shuffle([p.pt, ...distratores(todas,p.pt,3,x=>x.pt)]), certa:p.pt, cartao:p});
+  }
+  // 15 · letra → som
+  for(const k of KANA){
+    Q.push({tipo:'Que som tem esta letra?', prompt:`Que som tem a letra`, g:k.ch, opcoes:shuffle([k.ro,...distratores(KANA,k.ro,3,x=>x.ro)]), certa:k.ro, cartao:P[EXEMPLO[k.ch]], letra:k});
+  }
+  // 10 · som → letra
+  for(const k of amostra(KANA,10)){
+    Q.push({tipo:'Qual letra tem este som?', prompt:`Qual letra tem o som “${k.ro}”?`, jpOp:true, opcoes:shuffle([k.ch,...distratores(KANA,k.ch,3,x=>x.ch)]), certa:k.ch, cartao:P[EXEMPLO[k.ch]], letra:k});
+  }
+  // 10 · quantos traços
+  for(const k of amostra(KANA,10)){
+    const ops=[1,2,3,4].filter(n=>n!==k.tr); Q.push({tipo:'Quantos traços?', prompt:`Quantos traços tem`, g:k.ch, opcoes:shuffle([String(k.tr),...amostra(ops,2).map(String)]), certa:String(k.tr), cartao:P[EXEMPLO[k.ch]], letra:k, nota:`${k.ch} tem ${k.tr} traço${k.tr>1?'s':''}.`});
+  }
+  // 8 · pares que confundem / intrusa
+  const pares=[
+    {prompt:'あ ou お: qual tem o pinguinho no alto à direita?',opcoes:['あ','お'],certa:'お',jpOp:true,nota:'お (o) tem o pinguinho; あ (a) não.'},
+    {prompt:'さ ou き: qual tem DUAS linhas deitadas?',opcoes:['さ','き'],certa:'き',jpOp:true,nota:'き (ki) tem duas; さ (sa) tem uma.'},
+    {prompt:'け ou せ: em qual a linha deitada atravessa a letra inteira?',opcoes:['け','せ'],certa:'せ',jpOp:true,nota:'Em せ (se) a linha cruza tudo; em け (ke) o lado esquerdo é separado.'},
+    {prompt:'い ou こ: qual tem os dois traços DEITADOS?',opcoes:['い','こ'],certa:'こ',jpOp:true,nota:'こ (ko) deitados; い (i) em pé.'},
+    {prompt:'く ou し: qual termina com um anzol virando para a direita?',opcoes:['く','し'],certa:'し',jpOp:true,nota:'し desce e vira à direita; く é um bico para a esquerda.'},
+    {prompt:'Qual é a INTRUSA: か き さ く こ?',opcoes:['き','さ','く','こ'],certa:'さ',jpOp:true,nota:'さ é da linha S; as outras são da linha K.'},
+    {prompt:'Qual é a INTRUSA: あ い う け お?',opcoes:['い','け','う','お'],certa:'け',jpOp:true,nota:'け = ke tem consoante; as outras são vogais puras.'},
+    {prompt:'Que letra falta na linha S: さ し す そ?',opcoes:['け','せ','え','き'],certa:'せ',jpOp:true,nota:'sa-shi-su-se-so: faltou せ.'},
+  ];
+  for(const q of pares) Q.push({tipo:'Pares que confundem', ...q, opcoes:shuffle(q.opcoes), cartao:P[EXEMPLO[q.certa]], letra:K[q.certa]});
+  // 18 · escrita: do significado para o hiragana
+  for(const p of amostra(todas.filter(p=>p.jp.length>=2),18)){
+    const falsas=new Set(); while(falsas.size<3){ const f=palavraFalsa(p.jp); if(f) falsas.add(f); else break; }
+    Q.push({tipo:'Escrita: como se escreve?', prompt:`Como se escreve “${p.pt}” (${p.ro})?`, jpOp:true, opcoes:shuffle([p.jp,...falsas]), certa:p.jp, cartao:p});
+  }
+  // 15 · complete a letra que falta
+  for(const p of amostra(todas.filter(p=>p.jp.length>=2),15)){
+    const i=Math.floor(Math.random()*p.jp.length); const c=p.jp[i]; const oculta=[...p.jp].map((x,j)=>j===i?'？':x).join('');
+    const ops=[c]; if(CONFUSO[c]) ops.push(CONFUSO[c]); for(const k of shuffle(KANA)){ if(ops.length===4) break; if(!ops.includes(k.ch)) ops.push(k.ch); }
+    Q.push({tipo:'Complete a letra que falta', prompt:`${p.ro} = “${p.pt}”. Que letra falta?`, g:oculta, jpOp:true, opcoes:shuffle(ops), certa:c, cartao:p});
+  }
+  return shuffle(Q).map((q,i)=>({...q,id:i,erros:0}));
+}
+
+/* ---------- áudio ---------- */
+function vozJaponesa(){ const v=speechSynthesis.getVoices(); return v.find(x=>x.lang&&x.lang.toLowerCase().replace('_','-').startsWith('ja'))||null; }
+function falar(txt, btn, romaji){
+  const status=(t,ms)=>{ if(!btn) return; btn.textContent=t; if(ms) setTimeout(()=>btn.textContent='🔊 ouvir',ms); };
+  if(!('speechSynthesis' in window)){ status('🔇 sem suporte',2500); mostrarAviso('Este navegador não tem síntese de voz. Abra o arquivo no Chrome ou Edge.'); return; }
+  if(speechSynthesis.getVoices().length===0){ status('⏳ carregando…'); speechSynthesis.onvoiceschanged=()=>{ speechSynthesis.onvoiceschanged=null; falar(txt,btn,romaji); }; setTimeout(()=>{ if(btn && btn.textContent.startsWith('⏳')) falar(txt,btn,romaji); },1500); return; }
+  speechSynthesis.cancel(); const v=vozJaponesa(); const u=new SpeechSynthesisUtterance(v?txt:(romaji||txt));
+  if(v){ u.voice=v; u.lang=v.lang; } else { u.lang='pt-BR'; mostrarAviso('Sem voz de japonês instalada: estou lendo em romaji com a voz disponível.'); }
+  u.rate=0.75; u.onstart=()=>status('🔈 falando…'); u.onend=()=>status('🔊 ouvir');
+  u.onerror=e=>{ status('🔇 erro',2500); mostrarAviso('O navegador bloqueou o áudio. Se está numa pré-visualização, baixe o arquivo e abra direto no Chrome/Edge.'); };
+  speechSynthesis.speak(u);
+}
+function mostrarAviso(m){ const a=document.getElementById('som-aviso'); a.textContent='🔇 '+m; a.style.display='block'; }
+if('speechSynthesis' in window) speechSynthesis.getVoices();
+
+/* ---------- jogo ---------- */
+const tela=document.getElementById('tela');
+let fila=[], feitas=0, acertos=0, total=0, banco=[];
+function inicio(){
+  tela.innerHTML=`<div class="card inicio">
+    <p><b>Como funciona:</b> uma pergunta de cada vez, quatro tipos misturados, com ênfase em ler a palavra em japonês e descobrir o que ela quer dizer.</p>
+    <p>Se errar, a pergunta volta mais duas vezes ao longo do jogo — é assim que fixa. Não tem pressa: leia a letra por letra antes de responder.</p>
+    <p>Temos ${PALAVRAS.length} palavras possíveis só com as 15 letras que você já sabe; muitas vão aparecer pela primeira vez, e tudo bem, o cartão explica.</p>
+    <button class="prox" id="comecar">Começar</button></div>`;
+  document.getElementById('comecar').onclick=()=>{ banco=gerar(); fila=banco.slice(); total=fila.length; feitas=0; acertos=0; proxima(); };
+}
+function proxima(){
+  if(!fila.length) return fim();
+  const q=fila.shift();
+  const barra=`<div class="barra"><span>${feitas} feitas</span><div class="trilho"><i style="width:${Math.round(100*feitas/(feitas+fila.length+1))}%"></i></div><span>${fila.length+1} na fila</span></div>`;
+  const g=q.g?`<span class="g jp">${q.g}</span>`:'';
+  const ops=q.opcoes.map(o=>`<button class="op ${q.jpOp?'jp':''}" data-v="${o}">${o}</button>`).join('');
+  tela.innerHTML=`${barra}<div class="tipo">${q.tipo}${q.erros?' · repetindo':''}</div><div class="card"><div class="pergunta">${q.prompt}${g}</div><div class="opcoes">${ops}</div><div class="fig" id="fig"></div></div>`;
+  tela.querySelectorAll('.op').forEach(b=>b.onclick=()=>responder(q,b));
+  tela.querySelector('.op').focus();
+}
+function responder(q,b){
+  const v=b.dataset.v, ok=v===q.certa; feitas++; if(ok) acertos++;
+  tela.querySelectorAll('.op').forEach(x=>{ x.disabled=true; if(x.dataset.v===q.certa) x.classList.add('certa'); });
+  if(!ok){ b.classList.add('errada'); q.erros++; const a=Math.min(fila.length,3), c=Math.min(fila.length,9); fila.splice(a,0,q); fila.splice(c+1,0,q); }
+  cartao(q,ok);
+}
+function cartao(q,ok){
+  const p=q.cartao; const soma=[...p.jp].map(c=>`<span class="l"><b class="jp">${c}</b><small>${K[c].ro}</small></span>`).join('<span class="mais">+</span>');
+  const titulo=ok?`✔ Acertou!`:`✘ A resposta certa era <b class="jp">${q.certa}</b>`;
+  const intro=q.letra?`<div class="fig-nota">A letra <b class="jp" style="color:var(--hira)">${q.letra.ch}</b> (${q.letra.ro}) ${q.letra.som}, ${q.letra.tr} traço${q.letra.tr>1?'s':''}. Ela aparece em:</div>`:'';
+  const fig=document.getElementById('fig');
+  fig.innerHTML=`<div class="veredito ${ok?'ok':'nao'}">${titulo}</div>${intro}
+    <div class="fig-corpo"><div class="fig-img">${p.e}</div><div class="fig-txt">
+      <div class="fig-jp jp">${p.jp}</div><div class="fig-ro">${p.ro}</div><div class="fig-pt">${p.pt}</div>
+      <div class="soma">${soma}<span class="mais">=</span><span style="font-weight:700">${p.ro}</span></div>
+      <button class="btn-som" id="som">🔊 ouvir</button></div></div>
+    ${q.nota?`<div class="fig-nota">${q.nota}</div>`:''}
+    ${!ok?`<div class="fig-nota">Essa volta mais duas vezes para fixar.</div>`:''}`;
+  fig.classList.add('on');
+  document.getElementById('som').onclick=e=>falar(p.jp,e.target,p.ro);
+  const prox=document.createElement('button'); prox.className='prox'; prox.textContent=fila.length?'Próxima →':'Ver resultado'; prox.onclick=proxima; fig.after(prox); prox.focus();
+  const tecla=e=>{ if(e.key==='Enter'){ document.removeEventListener('keydown',tecla); proxima(); } }; document.addEventListener('keydown',tecla);
+}
+function fim(){
+  const rev=banco.filter(q=>q.erros>0);
+  const palavras=[...new Map(rev.map(q=>[q.cartao.jp,q.cartao])).values()];
+  const cards=palavras.map(p=>`<div class="rev"><div class="e">${p.e}</div><span class="j jp">${p.jp}</span><span class="p">${p.pt}</span></div>`).join('');
+  tela.innerHTML=`<div class="card fim"><div class="placar">${acertos} acertos em ${feitas} respostas (${Math.round(100*acertos/feitas)}%)</div>
+    <p>${total} perguntas diferentes; ${rev.length} precisaram de repetição.</p>
+    ${rev.length?`<p><b>Palavras para rever:</b></p><div class="lista-rev">${cards}</div>`:`<p>Nenhum erro. Está pronta para a linha た.</p>`}
+    <button class="prox" id="denovo">Jogar de novo (novo sorteio)</button></div>`;
+  document.getElementById('denovo').onclick=inicio;
+}
+inicio();
+</script>
+</body>
+</html>

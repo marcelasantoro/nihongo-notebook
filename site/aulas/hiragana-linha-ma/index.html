@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloco 7 · A linha ま — ma mi mu me mo</title>
+<style>
+  :root{
+    --paper:#FAF7F0; --ink:#26241F; --soft:#6B6557; --indigo:#2E4272;
+    --hira:#2F7D5B; --hira-bg:#E4F2EA; --hanko:#C63D2F; --line:#E4DED2;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--paper); color:var(--ink);
+    font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;
+    line-height:1.6; font-size:16px;}
+  .wrap{max-width:760px; margin:0 auto; padding:32px 16px 80px;}
+  h1{font-family:Iowan Old Style,Georgia,serif; font-size:clamp(23px,5vw,30px); margin-bottom:8px;}
+  p{margin-bottom:12px; max-width:64ch;}
+  .stamp{display:inline-block; border:2px solid var(--hanko); color:var(--hanko);
+    border-radius:8px; padding:2px 10px; font-size:13px; font-weight:600; margin-bottom:12px;}
+  .jp{font-family:"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;}
+  .regras{background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin:14px 0; font-size:14.5px;}
+  .regras b{color:var(--indigo);}
+
+  .licao{background:#fff; border:1px solid var(--line); border-radius:18px; padding:18px 16px; margin:26px 0;}
+  .licao-h{display:flex; align-items:baseline; gap:12px; margin-bottom:12px; flex-wrap:wrap;}
+  .licao-h .g{font-size:40px; color:var(--hira);}
+  .licao-h .nome{font-weight:700; font-size:18px;}
+  .licao-h .som{color:var(--soft); font-size:14px;}
+
+  .zona{display:flex; gap:16px; flex-wrap:wrap; align-items:flex-start;}
+  .anim-box{text-align:center;}
+  .anim-box svg{width:200px; height:200px; background:var(--paper); border:1.5px solid var(--line); border-radius:14px;}
+  .btn{margin-top:8px; border:1.5px solid var(--indigo); color:var(--indigo); background:#fff;
+    border-radius:10px; padding:6px 14px; font-size:13.5px; font-weight:600; cursor:pointer; font-family:inherit;}
+  .btn:active{background:var(--indigo); color:#fff;}
+  .cap{font-size:12px; color:var(--soft); margin-top:4px;}
+
+  .passos{flex:1; min-width:250px;}
+  .passos-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .passo{text-align:center;}
+  .passo svg{width:96px; height:96px; background:var(--paper); border:1.5px dashed var(--line); border-radius:12px;}
+  .passo .lbl{font-size:12px; font-weight:700; color:var(--hira); margin-top:2px;}
+  .instr{margin-top:10px; font-size:14px;}
+  .instr li{margin:6px 0 6px 20px;}
+  .instr .n{display:inline-block; background:var(--hira); color:#fff; border-radius:50%;
+    width:20px; height:20px; text-align:center; line-height:20px; font-size:12px; font-weight:700; margin-right:6px;}
+
+  .pad-area{margin-top:16px;}
+  .pad-t{font-size:13.5px; font-weight:700; color:var(--indigo); margin-bottom:6px;}
+  .pad{position:relative; width:min(260px,80vw); height:min(260px,80vw); border:2px solid var(--indigo);
+    border-radius:16px; background:#fff; touch-action:none; overflow:hidden;}
+  .pad svg,.pad canvas{position:absolute; inset:0; width:100%; height:100%;}
+  .pad-btns{margin-top:8px; display:flex; gap:8px;}
+  .aviso{background:var(--hira-bg); border-left:5px solid var(--hira); border-radius:0 12px 12px 0;
+    padding:12px 16px; margin:18px 0; font-size:14.5px;}
+  .btn-som{border:1.5px solid var(--hira); color:var(--hira); background:var(--hira-bg);
+    border-radius:999px; padding:4px 12px; font-size:13.5px; font-weight:700; cursor:pointer; font-family:inherit;}
+  .btn-som:active{background:var(--hira); color:#fff;}
+  .btn-som[disabled]{opacity:.45; cursor:not-allowed;}
+  .som-aviso{background:#FFF4E5; border-left:5px solid #E0A030; border-radius:0 12px 12px 0;
+    padding:10px 14px; margin:12px 0; font-size:13.5px; display:none;}
+  .palavras{background:#fff; border:1px solid var(--line); border-radius:18px; padding:18px 16px; margin:26px 0;}
+  .palavras h2{font-family:Iowan Old Style,Georgia,serif; font-size:20px; margin-bottom:4px;}
+  .pal-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-top:12px;}
+  .pal{border:1.5px solid var(--line); border-radius:14px; padding:12px 10px; text-align:center; background:var(--paper);}
+  .pal .jp{font-size:30px; color:var(--hira); display:block;}
+  .pal .ro{font-size:12.5px; color:var(--soft); letter-spacing:.04em;}
+  .pal .pt{font-size:14px; margin:2px 0 8px;}
+  footer{margin-top:48px; font-size:12.5px; color:var(--soft); border-top:1px solid var(--line); padding-top:14px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="stamp">Etapa 2 · Bloco 7 · Caderno de escrita</span>
+  <h1 class="jp">Bloco 7 · A linha ま — ma mi mu me mo</h1>
+  <p>Bloco 7 de 10 do hiragana. Ouça cada letra no 🔊, veja o traçado animado, depois cubra com o dedo e leia as palavras no fim.</p>
+  <p>Igual caderno de alfabetização: a <b style="color:var(--hanko)">bolinha vermelha</b> é onde a caneta <b>encosta</b> no papel, a <b style="color:var(--hira)">linha verde tracejada</b> é o caminho que ela percorre, e a setinha mostra para onde ela vai. Um traço de cada vez.</p>
+
+  <div class="regras">📏 <b>As 3 regrinhas de ouro da escrita japonesa:</b> ① traços de <b>cima para baixo</b> · ② traços da <b>esquerda para a direita</b> · ③ pinguinhos e bolinhas soltas ficam <b>por último</b>. Se bater dúvida, essas três regras acertam quase sempre.</div>
+
+  <div id="som-aviso" class="som-aviso"></div>
+  <div id="licoes"></div>
+  <div id="palavras"></div>
+
+  <div class="aviso">✍️ <b>Como treinar:</b> para cada letra — 1º ouça no 🔊 e repita em voz alta; 2º assista a animação 2 ou 3 vezes; 3º "escreva" com o dedo no quadro azul seguindo o tracejado; 4º só então vá para o papel. Três pares para não confundir: ま tem duas linhas deitadas e ほ tem duas também, mas o ほ tem o traço vertical à esquerda; め é o ぬ sem o laço final; e む é o す com um pinguinho a mais no canto.</div>
+
+  <footer>Japonês do zero · turma にほんご５ · Traçados oficiais: base <b>KanjiVG</b> © Ulrich Apel, licença CC BY-SA 3.0 (kanjivg.tagaini.net).</footer>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <marker id="arrw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2F7D5B"/>
+    </marker>
+  </defs>
+</svg>
+
+<script>
+const DATA = {"ま": ["M29.83,32.28c2.2,1.15,4.43,1.5,7.14,1.26c11.54-1.04,25.94-3.12,34.66-4.85c2.87-0.57,5.45-0.44,7.13-0.44", "M33.83,51.84c2.45,1.61,4.94,1.72,7.94,1.26c9.52-1.46,17.87-3.1,27.03-5.16c3.22-0.72,6.34-1.32,8.21-1.32", "M55.81,14c1.52,1.8,1.8,4.57,1.8,7.19c0,2.63,0.46,43.88,0.46,54.25c0,21.3-30.07,19.96-30.07,9.86c0-10.79,25.88-9.93,38.57-3.18c6.12,3.25,11.55,6.38,14.8,9.13"], "み": ["M32.5,26c1.88,1.75,4.06,1.7,6.88,1.25c3.88-0.62,7.62-1.75,11.88-3.12c4.26-1.37,6.25-0.12,4.5,5.12c-1.75,5.24-6.66,17.39-12,30.12c-13.63,32.51-29.26,29.26-29.26,18.63c0-14.25,20.48-15.36,33-13.5c18.5,2.75,30,6.62,44.38,14.25", "M79.38,54.75c0.75,2.38,0.49,4.37,0,6.25c-2.12,8.12-7.5,25-22.12,33.75"], "む": ["M19.59,31.65c2.1,1.55,4.24,1.66,6.81,1.21c8.17-1.41,15.33-2.98,23.19-4.96c2.76-0.69,5.44-1.27,7.05-1.27", "M37.02,15.5c1.62,1.25,2.31,2.88,2.12,5.25c-0.88,11.12-1.5,20.75-4,34.88c-3.61,20.44-19.25,16.99-18.62,7.37c0.5-7.74,6.25-12.86,12.62-13.5c5-0.5,14.28,1.93,5.88,15c-12.62,19.62-11.42,24.51,5.11,25.54c10.98,0.68,19.26,0.72,28.49-0.92c14.15-2.5,7.4-2.63,7.4-11.13", "M78.52,36.25c6.88,3.12,11.71,5.95,14.88,10.12c6.25,8.25-1.38,3.62-4.5,4.5"], "め": ["M27.48,31.75c1.75,1,2.41,3.09,2.5,5.25c0.5,11.62,2.75,23.5,7.25,31.38c1.39,2.44,5.38,8.5,7.25,10.38", "M59.6,19.38c1,1.5,1.35,4.12,0.88,6.62c-2.75,14.62-13.62,37.75-20.1,47.24c-12.28,17.14-16.78,13.14-22.28,0.64c-5.38-15.38,26.4-42.18,53.42-35.28c29.08,8.27,23.96,46.02-7.98,50.15"], "も": ["M49.17,14.75c1.88,1.88,1.86,4.52,1.12,8c-3,14.25-5,26.62-7,42.12c-2.55,19.73-0.75,29.88,17,29.86c20.25-0.02,28.63-13.11,20.01-35.73", "M26.54,34.62c1.12,0.88,2.87,2.21,6,2c11.12-0.75,20-2.12,27.74-3.46c3.88-0.67,5.88-1.17,8.88-1.04", "M26.42,53.38c-1.5,4,1,6.75,7.75,6.75c8.75,0,17.62-1,22.88-1.88c2.01-0.33,5.38-1,7.5-1.75"]};
+const SOM = {"ま": "soa como o MA de mala", "み": "soa como o MI de mimo", "む": "soa como o MU de mudo", "め": "soa como o MÉ de mesa", "も": "soa como o MÓ de moda"};
+const INSTR = {"ま": ["Uma linha deitada em cima.", "Outra linha deitada logo abaixo, um pouco mais curta.", "Desce cortando as duas e termina com um laçinho na base."], "み": ["Começa com um tracinho deitado, desce, dá uma volta para a esquerda e sai numa linha comprida para a direita — parece um 2 deitado.", "Um traço inclinado que desce cruzando a linha comprida."], "む": ["Uma linha deitada em cima.", "Desce cortando a linha, faz um laçinho pequeno e termina puxando para a direita.", "Um pinguinho no canto de cima, à direita."], "め": ["Uma linha inclinada que desce da esquerda para a direita.", "Começa no alto, desce para a esquerda, cruza o primeiro traço e dá a volta grande — termina sem laço, só com a ponta."], "も": ["Desce reto e, lá embaixo, faz a curva para a direita subindo — como um anzol.", "Uma linha deitada cruzando o anzol, em cima.", "Outra linha deitada cruzando um pouco abaixo."]};
+const PALAVRAS = [{"jp": "まち", "romaji": "machi", "pt": "cidade"}, {"jp": "みみ", "romaji": "mimi", "pt": "orelha"}, {"jp": "むし", "romaji": "mushi", "pt": "inseto"}, {"jp": "め", "romaji": "me", "pt": "olho"}, {"jp": "もも", "romaji": "momo", "pt": "pêssego"}, {"jp": "あめ", "romaji": "ame", "pt": "chuva"}, {"jp": "なまえ", "romaji": "namae", "pt": "nome"}, {"jp": "うみ", "romaji": "umi", "pt": "mar"}];
+/* ---- áudio: pronúncia usando a voz de japonês do navegador ---- */
+const ROMAJI = {"ま": "ma", "み": "mi", "む": "mu", "め": "me", "も": "mo", "まち": "machi", "みみ": "mimi", "むし": "mushi", "もも": "momo", "あめ": "ame", "なまえ": "namae", "うみ": "umi"};
+function vozJaponesa(){
+  const vozes = speechSynthesis.getVoices();
+  return vozes.find(v => v.lang && v.lang.toLowerCase().replace('_','-').startsWith('ja')) || null;
+}
+function falar(ch, btn){
+  const status = (t, ms) => { if(!btn) return; const orig = '🔊 ouvir'; btn.textContent = t; if(ms) setTimeout(() => btn.textContent = orig, ms); };
+  if(!('speechSynthesis' in window)){ status('🔇 sem suporte', 2500); mostrarAviso('Este navegador não tem síntese de voz. Abra o arquivo no Chrome ou Edge.'); return; }
+  if(speechSynthesis.getVoices().length === 0){
+    status('⏳ carregando…');
+    speechSynthesis.onvoiceschanged = () => { speechSynthesis.onvoiceschanged = null; falar(ch, btn); };
+    setTimeout(() => { if(btn.textContent.startsWith('⏳')) falar(ch, btn); }, 1500);
+    return;
+  }
+  speechSynthesis.cancel();
+  const v = vozJaponesa();
+  const u = new SpeechSynthesisUtterance(v ? ch : (ROMAJI[ch] || ch));
+  if(v){ u.voice = v; u.lang = v.lang; }
+  else { u.lang = 'pt-BR'; mostrarAviso('Sem voz de japonês instalada: estou lendo a letra em romaji com a voz disponível. Para o som real, instale o japonês nas configurações de texto-para-fala do sistema.'); }
+  u.rate = 0.75; u.pitch = 1;
+  u.onstart = () => status('🔈 falando…');
+  u.onend = () => status('🔊 ouvir');
+  u.onerror = e => { status('🔇 erro', 2500); mostrarAviso('O navegador bloqueou o áudio ('+(e.error||'')+'). Se está vendo isto numa pré-visualização, baixe o arquivo e abra-o direto no Chrome/Edge.'); };
+  speechSynthesis.speak(u);
+}
+function mostrarAviso(msg){ const av = document.getElementById('som-aviso'); if(!av) return; av.textContent = '🔇 ' + msg; av.style.display = 'block'; }
+if('speechSynthesis' in window){ speechSynthesis.getVoices(); }
+const NS = "http://www.w3.org/2000/svg";
+const cont = document.getElementById('licoes');
+const animadores = [];
+
+function svgEl(tag, attrs){ const e = document.createElementNS(NS, tag); for(const k in attrs) e.setAttribute(k, attrs[k]); return e; }
+function baseSvg(){ const s = svgEl('svg', {viewBox:"0 0 109 109"}); return s; }
+function pathEl(d, opts){ return svgEl('path', Object.assign({d:d, fill:"none", "stroke-linecap":"round", "stroke-linejoin":"round"}, opts)); }
+
+Object.keys(DATA).forEach(ch => {
+  const strokes = DATA[ch];
+  const sec = document.createElement('div'); sec.className = 'licao';
+  sec.innerHTML = '<div class="licao-h"><span class="g jp">'+ch+'</span><span class="nome">Como escrever '+ch+'</span><span class="som">'+SOM[ch]+' · '+strokes.length+' traços</span></div>';
+  const btnSom = document.createElement('button'); btnSom.className = 'btn-som'; btnSom.type = 'button';
+  btnSom.textContent = '🔊 ouvir'; btnSom.title = 'Ouvir a pronúncia de '+ch;
+  btnSom.addEventListener('click', () => falar(ch, btnSom));
+  sec.querySelector('.licao-h').appendChild(btnSom);
+
+  const zona = document.createElement('div'); zona.className = 'zona';
+
+  /* ---- animação ---- */
+  const animBox = document.createElement('div'); animBox.className = 'anim-box';
+  const asvg = baseSvg();
+  strokes.forEach(d => asvg.appendChild(pathEl(d, {stroke:"#E4DED2","stroke-width":6})));
+  const animPaths = strokes.map(d => { const p = pathEl(d, {stroke:"#26241F","stroke-width":6}); asvg.appendChild(p); return p; });
+  animBox.appendChild(asvg);
+  const btn = document.createElement('button'); btn.className = 'btn'; btn.textContent = '▶ desenhar de novo';
+  const cap = document.createElement('div'); cap.className = 'cap'; cap.textContent = 'velocidade de quem está aprendendo';
+  animBox.appendChild(document.createElement('br')); animBox.appendChild(btn); animBox.appendChild(cap);
+
+  function animar(){
+    let delay = 300;
+    animPaths.forEach(p => {
+      const len = p.getTotalLength();
+      p.style.transition = 'none';
+      p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
+      p.getBoundingClientRect();
+      const dur = Math.max(len*14, 500);
+      setTimeout(() => { p.style.transition = 'stroke-dashoffset '+dur+'ms linear'; p.style.strokeDashoffset = 0; }, delay);
+      delay += dur + 350;
+    });
+  }
+  btn.addEventListener('click', animar);
+  animadores.push(animar);
+
+  /* ---- passos ---- */
+  const passos = document.createElement('div'); passos.className = 'passos';
+  const row = document.createElement('div'); row.className = 'passos-row';
+  strokes.forEach((d, k) => {
+    const box = document.createElement('div'); box.className = 'passo';
+    const s = baseSvg();
+    strokes.forEach((d2, j) => {
+      if (j < k) s.appendChild(pathEl(d2, {stroke:"#26241F","stroke-width":6}));
+      else if (j > k) s.appendChild(pathEl(d2, {stroke:"#26241F","stroke-width":6, opacity:0.08}));
+    });
+    const guia = pathEl(d, {stroke:"#2F7D5B","stroke-width":5,"stroke-dasharray":"7 5","marker-end":"url(#arrw)"});
+    s.appendChild(guia);
+    box.appendChild(s);
+    const lbl = document.createElement('div'); lbl.className = 'lbl'; lbl.textContent = 'traço '+(k+1);
+    box.appendChild(lbl);
+    row.appendChild(box);
+    requestAnimationFrame(() => {
+      const p0 = guia.getPointAtLength(0);
+      s.appendChild(svgEl('circle', {cx:p0.x, cy:p0.y, r:5, fill:"#C63D2F"}));
+    });
+  });
+  passos.appendChild(row);
+  const ol = document.createElement('div'); ol.className = 'instr';
+  ol.innerHTML = INSTR[ch].map((t,i) => '<div style="margin:6px 0"><span class="n">'+(i+1)+'</span>'+t+'</div>').join('');
+  passos.appendChild(ol);
+
+  zona.appendChild(animBox); zona.appendChild(passos);
+  sec.appendChild(zona);
+
+  /* ---- quadro do dedo ---- */
+  const padArea = document.createElement('div'); padArea.className = 'pad-area';
+  padArea.innerHTML = '<div class="pad-t">🖐️ Agora você: cubra o tracejado com o dedo (bolinha = começo)</div>';
+  const pad = document.createElement('div'); pad.className = 'pad';
+  const gsvg = baseSvg();
+  strokes.forEach(d => {
+    const g = pathEl(d, {stroke:"#B9B2A2","stroke-width":5,"stroke-dasharray":"6 6"});
+    gsvg.appendChild(g);
+    requestAnimationFrame(() => {
+      const p0 = g.getPointAtLength(0);
+      gsvg.appendChild(svgEl('circle', {cx:p0.x, cy:p0.y, r:4.5, fill:"#C63D2F"}));
+    });
+  });
+  const cv = document.createElement('canvas');
+  pad.appendChild(gsvg); pad.appendChild(cv);
+  padArea.appendChild(pad);
+  const btns = document.createElement('div'); btns.className = 'pad-btns';
+  const limpar = document.createElement('button'); limpar.className = 'btn'; limpar.textContent = '🧽 limpar';
+  btns.appendChild(limpar); padArea.appendChild(btns);
+  sec.appendChild(padArea);
+  cont.appendChild(sec);
+
+  function setupCanvas(){
+    const r = pad.getBoundingClientRect(); const dpr = window.devicePixelRatio || 1;
+    cv.width = r.width*dpr; cv.height = r.height*dpr;
+    const ctx = cv.getContext('2d'); ctx.scale(dpr, dpr);
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = 10; ctx.strokeStyle = 'rgba(47,125,91,.85)';
+    return ctx;
+  }
+  let ctx = null, desenhando = false;
+  requestAnimationFrame(() => { ctx = setupCanvas(); });
+  function pos(ev){ const r = cv.getBoundingClientRect(); return [ev.clientX-r.left, ev.clientY-r.top]; }
+  pad.addEventListener('pointerdown', ev => { if(!ctx) ctx = setupCanvas(); desenhando = true; const [x,y] = pos(ev); ctx.beginPath(); ctx.moveTo(x,y); ev.preventDefault(); });
+  pad.addEventListener('pointermove', ev => { if(!desenhando) return; const [x,y] = pos(ev); ctx.lineTo(x,y); ctx.stroke(); ev.preventDefault(); });
+  window.addEventListener('pointerup', () => desenhando = false);
+  limpar.addEventListener('click', () => { const r = pad.getBoundingClientRect(); ctx.clearRect(0,0,r.width,r.height); });
+});
+
+
+/* ---- palavras da aula: cada uma com botão de pronúncia ---- */
+(function(){
+  if(!PALAVRAS || !PALAVRAS.length) return;
+  const box = document.getElementById('palavras'); box.className = 'palavras';
+  box.innerHTML = '<h2>Palavras da aula</h2><p style="font-size:14px;color:var(--soft)">Toque no 🔊, ouça, repita em voz alta e depois leia o hiragana sem olhar o romaji.</p><div class="pal-grid"></div>';
+  const grid = box.querySelector('.pal-grid');
+  PALAVRAS.forEach(P => {
+    const card = document.createElement('div'); card.className = 'pal';
+    card.innerHTML = '<span class="jp">'+P.jp+'</span><div class="ro">'+(P.romaji||'')+'</div><div class="pt">'+(P.pt||'')+'</div>';
+    const b = document.createElement('button'); b.className = 'btn-som'; b.type = 'button'; b.textContent = '🔊 ouvir';
+    b.addEventListener('click', () => falar(P.jp, b));
+    card.appendChild(b); grid.appendChild(card);
+  });
+})();
+
+window.addEventListener('load', () => { animadores.forEach((a,i) => setTimeout(a, i*400)); });
+</script>
+</body>
+</html>
